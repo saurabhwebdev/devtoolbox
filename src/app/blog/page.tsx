@@ -1,14 +1,14 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-
-export const metadata = {
-  title: "Blog - DevToolBox",
-  description: "Read the latest articles, guides, and tutorials about web development tools and techniques.",
-  keywords: ["developer blog", "web development", "coding tutorials", "dev tools", "programming guides"],
-};
+import { LayoutGrid, List } from "lucide-react";
 
 export default function BlogIndexPage() {
+  const [viewMode, setViewMode] = useState<"card" | "list">("card");
+
   return (
     <div className="container py-12 space-y-8">
       <div className="flex flex-col items-center text-center space-y-4">
@@ -20,30 +20,86 @@ export default function BlogIndexPage() {
         </p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-8">
-        {blogPosts.map((post) => (
-          <Card key={post.slug} className="flex flex-col h-full">
-            <CardHeader>
-              <CardTitle className="text-xl">{post.title}</CardTitle>
-              <CardDescription>
-                <div className="flex items-center gap-2 text-sm">
-                  <span>{post.date}</span>
-                  <span>•</span>
-                  <span>{post.readTime} min read</span>
-                </div>
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex-grow">
-              <p className="text-sm text-muted-foreground">{post.excerpt}</p>
-            </CardContent>
-            <CardFooter>
-              <Button variant="outline" size="sm" className="w-full" asChild>
-                <Link href={`/blog/${post.slug}`}>Read Article</Link>
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
+      <div className="flex justify-end">
+        <div className="inline-flex rounded-md border shadow-sm">
+          <Button
+            variant={viewMode === "card" ? "default" : "ghost"}
+            size="sm"
+            className="rounded-r-none"
+            onClick={() => setViewMode("card")}
+          >
+            <LayoutGrid className="h-4 w-4 mr-2" />
+            Cards
+          </Button>
+          <Button
+            variant={viewMode === "list" ? "default" : "ghost"}
+            size="sm"
+            className="rounded-l-none"
+            onClick={() => setViewMode("list")}
+          >
+            <List className="h-4 w-4 mr-2" />
+            List
+          </Button>
+        </div>
       </div>
+      
+      {viewMode === "card" ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {blogPosts.map((post) => (
+            <Card key={post.slug} className="flex flex-col h-full">
+              <CardHeader>
+                <CardTitle className="text-xl">{post.title}</CardTitle>
+                <CardDescription>
+                  <div className="flex items-center gap-2 text-sm">
+                    <span>{post.date}</span>
+                    <span>•</span>
+                    <span>{post.readTime} min read</span>
+                  </div>
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex-grow">
+                <p className="text-sm text-muted-foreground">{post.excerpt}</p>
+              </CardContent>
+              <CardFooter>
+                <Button variant="outline" size="sm" className="w-full" asChild>
+                  <Link href={`/blog/${post.slug}`}>Read Article</Link>
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      ) : (
+        <div className="border rounded-lg overflow-hidden">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-muted/50">
+                <th className="text-left py-3 px-4 font-medium w-[50px]">#</th>
+                <th className="text-left py-3 px-4 font-medium">Article</th>
+                <th className="text-left py-3 px-4 font-medium hidden md:table-cell">Date</th>
+                <th className="text-left py-3 px-4 font-medium hidden md:table-cell">Read Time</th>
+                <th className="text-left py-3 px-4 font-medium hidden lg:table-cell">Description</th>
+                <th className="text-right py-3 px-4 font-medium w-[100px]"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {blogPosts.map((post, index) => (
+                <tr key={post.slug} className={index !== blogPosts.length - 1 ? "border-b" : ""}>
+                  <td className="py-3 px-4 text-muted-foreground text-center">{index + 1}</td>
+                  <td className="py-3 px-4 font-medium">{post.title}</td>
+                  <td className="py-3 px-4 text-muted-foreground text-sm hidden md:table-cell">{post.date}</td>
+                  <td className="py-3 px-4 text-muted-foreground text-sm hidden md:table-cell">{post.readTime} min</td>
+                  <td className="py-3 px-4 text-muted-foreground text-sm hidden lg:table-cell line-clamp-1">{post.excerpt}</td>
+                  <td className="py-3 px-4 text-right">
+                    <Button variant="outline" size="sm" asChild>
+                      <Link href={`/blog/${post.slug}`}>Read</Link>
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
