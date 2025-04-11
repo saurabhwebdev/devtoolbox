@@ -15,6 +15,14 @@ export interface ToolRequestData {
   createdAt?: any; // Firebase Timestamp
 }
 
+export interface ContactFormData {
+  type: 'contact';
+  name: string;
+  email: string;
+  message: string;
+  createdAt?: any; // Firebase Timestamp
+}
+
 export type FeedbackResponse = {
   success: boolean;
   id?: string;

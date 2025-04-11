@@ -2,7 +2,7 @@ import { initializeApp, getApps } from 'firebase/app';
 import { getFirestore, collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { getAnalytics } from 'firebase/analytics';
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, User } from 'firebase/auth';
-import { FeedbackData, ToolRequestData, FeedbackResponse } from '@/types/firebase';
+import { FeedbackData, ToolRequestData, ContactFormData, FeedbackResponse } from '@/types/firebase';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -82,6 +82,22 @@ export async function saveToolRequest(data: ToolRequestData): Promise<FeedbackRe
     return { success: true, id: docRef.id };
   } catch (error) {
     console.error('Error saving tool request:', error);
+    return { success: false, error };
+  }
+}
+
+// Function to save contact form submissions to Firestore
+export async function saveContactForm(data: ContactFormData): Promise<FeedbackResponse> {
+  try {
+    const contactCollection = collection(db, 'contacts');
+    const docRef = await addDoc(contactCollection, {
+      ...data,
+      createdAt: serverTimestamp(),
+      userId: auth.currentUser?.uid || null,
+    });
+    return { success: true, id: docRef.id };
+  } catch (error) {
+    console.error('Error saving contact form:', error);
     return { success: false, error };
   }
 }
