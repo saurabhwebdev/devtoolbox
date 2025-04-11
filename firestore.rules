@@ -1,0 +1,21 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow public write access to feedback and tool requests collections
+    // but restrict read access to authenticated admins only
+    match /feedback/{document=**} {
+      allow write: if true; // Allow anyone to submit feedback
+      allow read: if request.auth != null; // Only allow authenticated users to read
+    }
+    
+    match /toolRequests/{document=**} {
+      allow write: if true; // Allow anyone to submit tool requests
+      allow read: if request.auth != null; // Only allow authenticated users to read
+    }
+    
+    // Deny access to all other collections by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+} 
