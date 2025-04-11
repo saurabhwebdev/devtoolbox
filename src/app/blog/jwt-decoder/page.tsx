@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
 
 export const metadata = {
   title: "Understanding JWT: Structure, Security, and Implementation Best Practices - DevToolBox",
@@ -38,6 +39,20 @@ export default function JwtDecoderBlogPost() {
               framework for securing your applications. In this guide, we'll explore what makes JWTs so valuable, 
               how they work, and best practices for their implementation.
             </p>
+            
+            <div className="my-6 p-4 bg-primary/5 rounded-md">
+              <div className="flex flex-col sm:flex-row gap-4 items-center">
+                <div className="flex-1">
+                  <h3 className="text-xl font-medium">Try Our JWT Decoder Tool</h3>
+                  <p className="text-muted-foreground mt-2">
+                    Decode, verify and debug JWT tokens with our interactive tool. Examine the header, payload, and verify signatures.
+                  </p>
+                </div>
+                <Button asChild className="shrink-0">
+                  <Link href="/tools/jwt-decoder">Try the Tool</Link>
+                </Button>
+              </div>
+            </div>
           </section>
 
           <section>
@@ -80,48 +95,47 @@ export default function JwtDecoderBlogPost() {
               </div>
             </div>
             
-            <h3 className="text-xl font-medium mt-6 mb-3">Header</h3>
-            <p>
-              The header typically consists of two parts: the type of token (JWT) and the signing algorithm being
-              used, such as HMAC, RSA, or ECDSA.
-            </p>
-            <div className="my-4 p-4 bg-muted/30 rounded-md">
-              <pre className="text-sm overflow-x-auto">
+            <div className="not-prose my-8">
+              <Tabs defaultValue="header" className="w-full">
+                <TabsList className="grid grid-cols-1 md:grid-cols-3 w-full h-auto">
+                  <TabsTrigger value="header">Header</TabsTrigger>
+                  <TabsTrigger value="payload">Payload</TabsTrigger>
+                  <TabsTrigger value="signature">Signature</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="header">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg font-semibold mb-2">Header</h3>
+                      <p className="text-muted-foreground mb-4">
+                        The header typically consists of two parts: the type of token (JWT) and the signing algorithm being
+                        used, such as HMAC, RSA, or ECDSA.
+                      </p>
+                      <div className="p-3 bg-muted/30 rounded-md">
+                        <pre className="text-xs overflow-x-auto">
 {`{
   "alg": "HS256",
   "typ": "JWT"
 }`}
-              </pre>
-            </div>
-            <p>
-              This JSON is then Base64Url encoded to form the first part of the JWT.
-            </p>
-            
-            <h3 className="text-xl font-medium mt-6 mb-3">Payload</h3>
-            <p>
-              The payload contains the claims. Claims are statements about an entity (typically, the user) and
-              additional data. There are three types of claims:
-            </p>
-            <ul className="list-disc pl-6 my-4 space-y-2">
-              <li>
-                <strong>Registered claims:</strong> Predefined claims which are not mandatory but recommended, to provide a set of useful, interoperable claims. Examples include:
-                <ul className="list-disc pl-6 mt-2">
-                  <li><code>iss</code> (issuer): who issued the token</li>
-                  <li><code>sub</code> (subject): the subject of the token</li>
-                  <li><code>exp</code> (expiration time): when the token expires</li>
-                  <li><code>iat</code> (issued at): when the token was issued</li>
-                  <li><code>aud</code> (audience): the recipients the token is intended for</li>
-                </ul>
-              </li>
-              <li>
-                <strong>Public claims:</strong> Claims defined by those using JWTs. But to avoid collisions, they should be defined in the IANA JSON Web Token Registry or be defined as a URI that contains a collision-resistant namespace.
-              </li>
-              <li>
-                <strong>Private claims:</strong> Custom claims created to share information between parties that agree on using them.
-              </li>
-            </ul>
-            <div className="my-4 p-4 bg-muted/30 rounded-md">
-              <pre className="text-sm overflow-x-auto">
+                        </pre>
+                      </div>
+                      <p className="text-sm text-muted-foreground mt-3">
+                        This JSON is then Base64Url encoded to form the first part of the JWT.
+                      </p>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+                
+                <TabsContent value="payload">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg font-semibold mb-2">Payload</h3>
+                      <p className="text-muted-foreground mb-4">
+                        The payload contains the claims. Claims are statements about an entity (typically, the user) and
+                        additional data. There are three types of claims: registered, public, and private.
+                      </p>
+                      <div className="p-3 bg-muted/30 rounded-md">
+                        <pre className="text-xs overflow-x-auto">
 {`{
   "sub": "1234567890",
   "name": "John Doe",
@@ -129,38 +143,41 @@ export default function JwtDecoderBlogPost() {
   "iat": 1516239022,
   "exp": 1516242622
 }`}
-              </pre>
-            </div>
-            <p>
-              The payload is then Base64Url encoded to form the second part of the JWT.
-            </p>
-            <div className="my-6 p-4 bg-primary/10 rounded-md">
-              <p className="font-medium">Security Note:</p>
-              <p className="text-sm mt-2">
-                Never put sensitive information like passwords in the JWT payload unless it's encrypted.
-                The payload is easily decoded and its contents exposed.
-              </p>
-            </div>
-            
-            <h3 className="text-xl font-medium mt-6 mb-3">Signature</h3>
-            <p>
-              To create the signature part, you take the encoded header, the encoded payload, a secret, and the
-              algorithm specified in the header, and sign that. For example, if you want to use the HMAC SHA256
-              algorithm, the signature will be created in the following way:
-            </p>
-            <div className="my-4 p-4 bg-muted/30 rounded-md">
-              <pre className="text-sm overflow-x-auto">
+                        </pre>
+                      </div>
+                      <p className="text-sm text-muted-foreground mt-3">
+                        <strong>Note:</strong> Never put sensitive information like passwords in the JWT payload unless it's encrypted.
+                        The payload is easily decoded and its contents exposed.
+                      </p>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+                
+                <TabsContent value="signature">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg font-semibold mb-2">Signature</h3>
+                      <p className="text-muted-foreground mb-4">
+                        To create the signature part, you take the encoded header, the encoded payload, a secret, and the
+                        algorithm specified in the header, and sign that.
+                      </p>
+                      <div className="p-3 bg-muted/30 rounded-md">
+                        <pre className="text-xs overflow-x-auto">
 {`HMACSHA256(
   base64UrlEncode(header) + "." +
   base64UrlEncode(payload),
   secret
 )`}
-              </pre>
+                        </pre>
+                      </div>
+                      <p className="text-sm text-muted-foreground mt-3">
+                        The signature verifies that the message wasn't modified and, with private key signing, validates the sender's identity.
+                      </p>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </Tabs>
             </div>
-            <p>
-              The signature is used to verify that the message wasn't modified in transit and, in the case of
-              tokens signed with a private key, it can also verify that the sender of the JWT is who it says it is.
-            </p>
           </section>
           
           <section>
@@ -205,54 +222,63 @@ export default function JwtDecoderBlogPost() {
               While JWTs provide many benefits, they must be implemented correctly to ensure security:
             </p>
             
-            <h3 className="text-xl font-medium mt-6 mb-3">1. Set Appropriate Expiration Times</h3>
-            <p>
-              Use the <code>exp</code> claim to limit the lifetime of tokens. Short-lived tokens (minutes to hours)
-              reduce the window of opportunity for attackers if a token is compromised.
-            </p>
-            <div className="my-4 p-4 bg-muted/30 rounded-md">
-              <pre className="text-sm overflow-x-auto">
-{`// Setting expiration 1 hour from now
-const payload = {
-  sub: userId,
-  iat: Math.floor(Date.now() / 1000),
-  exp: Math.floor(Date.now() / 1000) + (60 * 60) // 1 hour
-};`}
-              </pre>
+            <div className="not-prose my-8">
+              <Card>
+                <CardContent className="pt-6">
+                  <h3 className="text-lg font-semibold mb-4">Security Best Practices Checklist</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="font-medium">1. Set Appropriate Expiration Times</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Use the <code>exp</code> claim to limit token lifetime. Short-lived tokens (minutes to hours)
+                        reduce the window of opportunity for attackers if a token is compromised.
+                      </p>
+                    </div>
+                    <div>
+                      <h4 className="font-medium">2. Implement Token Refresh Strategy</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Use refresh tokens alongside access tokens. The access token is short-lived, while the refresh token
+                        has a longer lifespan but is only used to obtain new access tokens.
+                      </p>
+                    </div>
+                    <div>
+                      <h4 className="font-medium">3. Use Strong Signing Keys</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Use strong, randomly generated secrets for HMAC algorithms and proper key management for RSA/ECDSA.
+                        Never hardcode secrets in your application code.
+                      </p>
+                    </div>
+                    <div>
+                      <h4 className="font-medium">4. Validate All Claims</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Always validate the signature, expiration time, issuer, audience, and any other claims relevant to
+                        your application's security model.
+                      </p>
+                    </div>
+                    <div>
+                      <h4 className="font-medium">5. Use HTTPS</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Always transmit JWTs over HTTPS to prevent token interception through man-in-the-middle attacks.
+                      </p>
+                    </div>
+                    <div>
+                      <h4 className="font-medium">6. Consider Token Storage Carefully</h4>
+                      <p className="text-sm text-muted-foreground">
+                        If storing tokens in the browser, understand the security implications of localStorage vs cookies.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
             
-            <h3 className="text-xl font-medium mt-6 mb-3">2. Implement Token Refresh Strategy</h3>
-            <p>
-              Use refresh tokens alongside access tokens. The access token is short-lived, while the refresh token
-              has a longer lifespan but is only used to obtain new access tokens.
-            </p>
-            
-            <h3 className="text-xl font-medium mt-6 mb-3">3. Use Strong Signing Keys</h3>
-            <p>
-              Use strong, randomly generated secrets for HMAC algorithms and proper key management for RSA/ECDSA.
-              Never hardcode secrets in your application code.
-            </p>
-            
-            <h3 className="text-xl font-medium mt-6 mb-3">4. Validate All Claims</h3>
-            <p>
-              Always validate the signature, expiration time, issuer, audience, and any other claims relevant to
-              your application's security model.
-            </p>
-            
-            <h3 className="text-xl font-medium mt-6 mb-3">5. Use HTTPS</h3>
-            <p>
-              Always transmit JWTs over HTTPS to prevent token interception through man-in-the-middle attacks.
-            </p>
-            
-            <h3 className="text-xl font-medium mt-6 mb-3">6. Consider Token Storage Carefully</h3>
-            <p>
-              If storing tokens in the browser, be aware of the security implications:
-            </p>
-            <ul className="list-disc pl-6 my-4 space-y-1">
-              <li>LocalStorage is vulnerable to XSS attacks</li>
-              <li>HttpOnly cookies are safer against XSS but vulnerable to CSRF (use CSRF tokens as mitigation)</li>
-              <li>For mobile apps, use secure, encrypted storage</li>
-            </ul>
+            <div className="my-6 p-4 bg-primary/10 rounded-md">
+              <p className="font-medium">Security Note:</p>
+              <p className="text-sm mt-2">
+                JWTs are not encrypted by default. If you need to include sensitive information in a token,
+                consider using JWE (JSON Web Encryption) or encrypt specific claims within your JWT.
+              </p>
+            </div>
             
             <h3 className="text-xl font-medium mt-6 mb-3">7. Implement Token Revocation Strategy</h3>
             <p>

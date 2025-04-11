@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
 
 export const metadata = {
   title: "Mastering Markdown: A Comprehensive Guide for Developers - DevToolBox",
@@ -37,6 +38,20 @@ export default function MarkdownPreviewerBlogPost() {
               documents without the overhead of complex markup languages. This guide will help you master
               Markdown and leverage its full potential for your projects.
             </p>
+            
+            <div className="my-6 p-4 bg-primary/5 rounded-md">
+              <div className="flex flex-col sm:flex-row gap-4 items-center">
+                <div className="flex-1">
+                  <h3 className="text-xl font-medium">Try Our Markdown Previewer Tool</h3>
+                  <p className="text-muted-foreground mt-2">
+                    Write, preview, and export Markdown with our interactive tool. See your changes instantly as you type.
+                  </p>
+                </div>
+                <Button asChild className="shrink-0">
+                  <Link href="/tools/markdown-previewer">Try the Tool</Link>
+                </Button>
+              </div>
+            </div>
           </section>
 
           <section>
@@ -65,43 +80,61 @@ export default function MarkdownPreviewerBlogPost() {
           <section>
             <h2 className="text-2xl font-bold mt-8 mb-4">Markdown Basics</h2>
             
-            <h3 className="text-xl font-medium mt-6 mb-3">Headers</h3>
-            <p>
-              Headers in Markdown are created using hash (#) symbols. The number of hashes indicates the header level:
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
-              <div className="p-3 bg-muted/30 rounded-md">
-                <h4 className="text-sm font-semibold mb-2">Markdown</h4>
-                <pre className="text-xs overflow-x-auto">
+            <div className="not-prose my-8">
+              <Tabs defaultValue="headers" className="w-full">
+                <TabsList className="grid grid-cols-2 md:grid-cols-4 w-full h-auto">
+                  <TabsTrigger value="headers">Headers</TabsTrigger>
+                  <TabsTrigger value="formatting">Text Formatting</TabsTrigger>
+                  <TabsTrigger value="lists">Lists</TabsTrigger>
+                  <TabsTrigger value="links">Links & Images</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="headers">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg font-semibold mb-2">Headers</h3>
+                      <p className="text-muted-foreground mb-4">
+                        Headers in Markdown are created using hash (#) symbols. The number of hashes indicates the header level:
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+                        <div className="p-3 bg-muted/30 rounded-md">
+                          <h4 className="text-sm font-semibold mb-2">Markdown</h4>
+                          <pre className="text-xs overflow-x-auto">
 {`# Heading 1
 ## Heading 2
 ### Heading 3
 #### Heading 4
 ##### Heading 5
 ###### Heading 6`}
-                </pre>
-              </div>
-              <div className="p-3 bg-muted/30 rounded-md">
-                <h4 className="text-sm font-semibold mb-2">Result</h4>
-                <div className="text-xs">
-                  <h1 className="text-xl font-bold">Heading 1</h1>
-                  <h2 className="text-lg font-bold">Heading 2</h2>
-                  <h3 className="text-base font-bold">Heading 3</h3>
-                  <h4 className="text-sm font-bold">Heading 4</h4>
-                  <h5 className="text-xs font-bold">Heading 5</h5>
-                  <h6 className="text-xs font-bold">Heading 6</h6>
-                </div>
-              </div>
-            </div>
-            
-            <h3 className="text-xl font-medium mt-6 mb-3">Paragraph and Text Formatting</h3>
-            <p>
-              Paragraphs in Markdown are separated by one or more blank lines. Basic text formatting includes:
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
-              <div className="p-3 bg-muted/30 rounded-md">
-                <h4 className="text-sm font-semibold mb-2">Markdown</h4>
-                <pre className="text-xs overflow-x-auto">
+                          </pre>
+                        </div>
+                        <div className="p-3 bg-muted/30 rounded-md">
+                          <h4 className="text-sm font-semibold mb-2">Result</h4>
+                          <div className="text-xs">
+                            <h1 className="text-xl font-bold">Heading 1</h1>
+                            <h2 className="text-lg font-bold">Heading 2</h2>
+                            <h3 className="text-base font-bold">Heading 3</h3>
+                            <h4 className="text-sm font-bold">Heading 4</h4>
+                            <h5 className="text-xs font-bold">Heading 5</h5>
+                            <h6 className="text-xs font-bold">Heading 6</h6>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+                
+                <TabsContent value="formatting">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg font-semibold mb-2">Paragraph and Text Formatting</h3>
+                      <p className="text-muted-foreground mb-4">
+                        Paragraphs in Markdown are separated by one or more blank lines. Basic text formatting includes:
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+                        <div className="p-3 bg-muted/30 rounded-md">
+                          <h4 className="text-sm font-semibold mb-2">Markdown</h4>
+                          <pre className="text-xs overflow-x-auto">
 {`This is a paragraph with *italic* text.
 
 This paragraph has **bold** text and also
@@ -110,27 +143,33 @@ has a line break without starting a new paragraph.
 Here's some text with ~~strikethrough~~.
 
 You can also do inline \`code\` like this.`}
-                </pre>
-              </div>
-              <div className="p-3 bg-muted/30 rounded-md">
-                <h4 className="text-sm font-semibold mb-2">Result</h4>
-                <div className="text-xs">
-                  <p>This is a paragraph with <em>italic</em> text.</p>
-                  <p>This paragraph has <strong>bold</strong> text and also<br />has a line break without starting a new paragraph.</p>
-                  <p>Here's some text with <del>strikethrough</del>.</p>
-                  <p>You can also do inline <code>code</code> like this.</p>
-                </div>
-              </div>
-            </div>
-            
-            <h3 className="text-xl font-medium mt-6 mb-3">Lists</h3>
-            <p>
-              Markdown supports both ordered (numbered) and unordered lists:
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
-              <div className="p-3 bg-muted/30 rounded-md">
-                <h4 className="text-sm font-semibold mb-2">Markdown</h4>
-                <pre className="text-xs overflow-x-auto">
+                          </pre>
+                        </div>
+                        <div className="p-3 bg-muted/30 rounded-md">
+                          <h4 className="text-sm font-semibold mb-2">Result</h4>
+                          <div className="text-xs">
+                            <p>This is a paragraph with <em>italic</em> text.</p>
+                            <p>This paragraph has <strong>bold</strong> text and also<br />has a line break without starting a new paragraph.</p>
+                            <p>Here's some text with <del>strikethrough</del>.</p>
+                            <p>You can also do inline <code>code</code> like this.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+                
+                <TabsContent value="lists">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg font-semibold mb-2">Lists</h3>
+                      <p className="text-muted-foreground mb-4">
+                        Markdown supports both ordered (numbered) and unordered lists:
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+                        <div className="p-3 bg-muted/30 rounded-md">
+                          <h4 className="text-sm font-semibold mb-2">Markdown</h4>
+                          <pre className="text-xs overflow-x-auto">
 {`### Unordered List
 - Item 1
 - Item 2
@@ -144,45 +183,51 @@ You can also do inline \`code\` like this.`}
    1. Nested item 1
    2. Nested item 2
 3. Third item`}
-                </pre>
-              </div>
-              <div className="p-3 bg-muted/30 rounded-md">
-                <h4 className="text-sm font-semibold mb-2">Result</h4>
-                <div className="text-xs">
-                  <h3 className="text-base font-bold">Unordered List</h3>
-                  <ul className="list-disc ml-5">
-                    <li>Item 1</li>
-                    <li>Item 2
-                      <ul className="list-disc ml-5">
-                        <li>Nested item A</li>
-                        <li>Nested item B</li>
-                      </ul>
-                    </li>
-                    <li>Item 3</li>
-                  </ul>
-                  <h3 className="text-base font-bold mt-2">Ordered List</h3>
-                  <ol className="list-decimal ml-5">
-                    <li>First item</li>
-                    <li>Second item
-                      <ol className="list-decimal ml-5">
-                        <li>Nested item 1</li>
-                        <li>Nested item 2</li>
-                      </ol>
-                    </li>
-                    <li>Third item</li>
-                  </ol>
-                </div>
-              </div>
-            </div>
-            
-            <h3 className="text-xl font-medium mt-6 mb-3">Links and Images</h3>
-            <p>
-              Markdown makes it easy to add links and embed images:
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
-              <div className="p-3 bg-muted/30 rounded-md">
-                <h4 className="text-sm font-semibold mb-2">Markdown</h4>
-                <pre className="text-xs overflow-x-auto">
+                          </pre>
+                        </div>
+                        <div className="p-3 bg-muted/30 rounded-md">
+                          <h4 className="text-sm font-semibold mb-2">Result</h4>
+                          <div className="text-xs">
+                            <h3 className="text-base font-bold">Unordered List</h3>
+                            <ul className="list-disc ml-5">
+                              <li>Item 1</li>
+                              <li>Item 2
+                                <ul className="list-disc ml-5">
+                                  <li>Nested item A</li>
+                                  <li>Nested item B</li>
+                                </ul>
+                              </li>
+                              <li>Item 3</li>
+                            </ul>
+                            <h3 className="text-base font-bold mt-2">Ordered List</h3>
+                            <ol className="list-decimal ml-5">
+                              <li>First item</li>
+                              <li>Second item
+                                <ol className="list-decimal ml-5">
+                                  <li>Nested item 1</li>
+                                  <li>Nested item 2</li>
+                                </ol>
+                              </li>
+                              <li>Third item</li>
+                            </ol>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+                
+                <TabsContent value="links">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg font-semibold mb-2">Links and Images</h3>
+                      <p className="text-muted-foreground mb-4">
+                        Markdown makes it easy to add links and embed images:
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+                        <div className="p-3 bg-muted/30 rounded-md">
+                          <h4 className="text-sm font-semibold mb-2">Markdown</h4>
+                          <pre className="text-xs overflow-x-auto">
 {`### Links
 [Visit DevToolBox](https://devtoolbox.com)
 
@@ -192,20 +237,25 @@ You can also do inline \`code\` like this.`}
 ![Alt text for the image](https://via.placeholder.com/150)
 
 [![Clickable image](https://via.placeholder.com/150)](https://devtoolbox.com)`}
-                </pre>
-              </div>
-              <div className="p-3 bg-muted/30 rounded-md">
-                <h4 className="text-sm font-semibold mb-2">Result</h4>
-                <div className="text-xs">
-                  <h3 className="text-base font-bold">Links</h3>
-                  <p><a href="#" className="text-blue-500 hover:underline">Visit DevToolBox</a></p>
-                  <p><a href="#" className="text-blue-500 hover:underline" title="DevToolBox Homepage">Link with title</a></p>
-                  
-                  <h3 className="text-base font-bold mt-2">Images</h3>
-                  <p>Image placeholder (150x150)</p>
-                  <p>Clickable image placeholder (150x150)</p>
-                </div>
-              </div>
+                          </pre>
+                        </div>
+                        <div className="p-3 bg-muted/30 rounded-md">
+                          <h4 className="text-sm font-semibold mb-2">Result</h4>
+                          <div className="text-xs">
+                            <h3 className="text-base font-bold">Links</h3>
+                            <p><a href="#" className="text-blue-500 hover:underline">Visit DevToolBox</a></p>
+                            <p><a href="#" className="text-blue-500 hover:underline" title="DevToolBox Homepage">Link with title</a></p>
+                            
+                            <h3 className="text-base font-bold mt-2">Images</h3>
+                            <p>Image placeholder (150x150)</p>
+                            <p>Clickable image placeholder (150x150)</p>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </Tabs>
             </div>
           </section>
           
@@ -246,7 +296,18 @@ body {
               of programming languages.
             </p>
             
-            <h3 className="text-xl font-medium mt-6 mb-3">Tables</h3>
+            <div className="my-6 p-4 bg-primary/10 rounded-md">
+              <p className="font-medium">Pro Tip:</p>
+              <p className="text-sm mt-2">
+                When writing documentation that includes code samples, always specify the language for your code blocks. 
+                This not only provides syntax highlighting but also helps screen readers and other accessibility tools 
+                properly interpret your content.
+              </p>
+            </div>
+          </section>
+          
+          <section>
+            <h2 className="text-2xl font-bold mt-8 mb-4">Tables</h2>
             <p>
               Tables in Markdown are created using pipes and dashes:
             </p>
@@ -293,8 +354,10 @@ body {
                 </div>
               </div>
             </div>
-            
-            <h3 className="text-xl font-medium mt-6 mb-3">Blockquotes</h3>
+          </section>
+          
+          <section>
+            <h2 className="text-2xl font-bold mt-8 mb-4">Blockquotes</h2>
             <p>
               Blockquotes can be used to highlight quotes or important notes:
             </p>
@@ -336,8 +399,10 @@ body {
                 </div>
               </div>
             </div>
-            
-            <h3 className="text-xl font-medium mt-6 mb-3">Task Lists</h3>
+          </section>
+          
+          <section>
+            <h2 className="text-2xl font-bold mt-8 mb-4">Task Lists</h2>
             <p>
               Task lists (or checkbox lists) are especially useful for tracking progress:
             </p>

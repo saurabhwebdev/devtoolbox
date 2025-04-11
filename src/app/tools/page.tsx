@@ -1,13 +1,14 @@
+"use client";
+
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
-
-export const metadata = {
-  title: "Tools - DevToolBox",
-  description: "Browse and use our collection of helpful developer tools",
-};
+import { LayoutGrid, List } from "lucide-react";
 
 export default function ToolsPage() {
+  const [viewMode, setViewMode] = useState<"card" | "list">("card");
+
   return (
     <div className="container py-12 space-y-8">
       <div className="flex flex-col items-center text-center space-y-4">
@@ -19,24 +20,76 @@ export default function ToolsPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-8">
-        {tools.map((tool) => (
-          <Card key={tool.title} className="h-full">
-            <CardHeader>
-              <CardTitle>{tool.title}</CardTitle>
-              <CardDescription>{tool.description}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm">{tool.content}</p>
-            </CardContent>
-            <CardFooter>
-              <Button variant="default" size="sm" className="w-full" asChild>
-                <Link href={tool.href}>Use Tool</Link>
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
+      <div className="flex justify-end">
+        <div className="inline-flex rounded-md border shadow-sm">
+          <Button
+            variant={viewMode === "card" ? "default" : "ghost"}
+            size="sm"
+            className="rounded-r-none"
+            onClick={() => setViewMode("card")}
+          >
+            <LayoutGrid className="h-4 w-4 mr-2" />
+            Cards
+          </Button>
+          <Button
+            variant={viewMode === "list" ? "default" : "ghost"}
+            size="sm"
+            className="rounded-l-none"
+            onClick={() => setViewMode("list")}
+          >
+            <List className="h-4 w-4 mr-2" />
+            List
+          </Button>
+        </div>
       </div>
+
+      {viewMode === "card" ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {tools.map((tool) => (
+            <Card key={tool.title} className="h-full">
+              <CardHeader>
+                <CardTitle>{tool.title}</CardTitle>
+                <CardDescription>{tool.description}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm">{tool.content}</p>
+              </CardContent>
+              <CardFooter>
+                <Button variant="default" size="sm" className="w-full" asChild>
+                  <Link href={tool.href}>Use Tool</Link>
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      ) : (
+        <div className="border rounded-lg overflow-hidden">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-muted/50">
+                <th className="text-left py-3 px-4 font-medium">Tool</th>
+                <th className="text-left py-3 px-4 font-medium hidden md:table-cell">Description</th>
+                <th className="text-left py-3 px-4 font-medium hidden lg:table-cell">Details</th>
+                <th className="text-right py-3 px-4 font-medium w-[100px]"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {tools.map((tool, index) => (
+                <tr key={tool.title} className={index !== tools.length - 1 ? "border-b" : ""}>
+                  <td className="py-3 px-4 font-medium">{tool.title}</td>
+                  <td className="py-3 px-4 text-muted-foreground text-sm hidden md:table-cell">{tool.description}</td>
+                  <td className="py-3 px-4 text-muted-foreground text-sm hidden lg:table-cell">{tool.content}</td>
+                  <td className="py-3 px-4 text-right">
+                    <Button variant="outline" size="sm" asChild>
+                      <Link href={tool.href}>Use</Link>
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }

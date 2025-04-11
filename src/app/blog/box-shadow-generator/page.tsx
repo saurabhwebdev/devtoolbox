@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Accordion,
   AccordionContent,
@@ -77,74 +79,90 @@ export default function BoxShadowGeneratorBlogPost() {
               </pre>
             </div>
             
-            <p>Let's break down each component:</p>
-            
-            <ul className="list-disc pl-6 my-4 space-y-1">
-              <li>
-                <strong>inset</strong>: Optional. When present, the shadow is drawn inside the element, creating an inner shadow.
-              </li>
-              <li>
-                <strong>x-offset</strong>: Required. Defines the horizontal distance of the shadow. Positive values position the shadow on the right of the element, negative values on the left.
-              </li>
-              <li>
-                <strong>y-offset</strong>: Required. Defines the vertical distance of the shadow. Positive values position the shadow below the element, negative values above it.
-              </li>
-              <li>
-                <strong>blur-radius</strong>: Optional. The larger the value, the bigger the blur effect, resulting in a more diffused shadow. Default is 0 (no blur).
-              </li>
-              <li>
-                <strong>spread-radius</strong>: Optional. Positive values increase the size of the shadow, negative values decrease it. Default is 0 (shadow is the same size as the element).
-              </li>
-              <li>
-                <strong>color</strong>: Optional. The color of the shadow. If not specified, it defaults to the text color of the element.
-              </li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-bold mt-8 mb-4">Basic Box Shadow Examples</h2>
-            
-            <p>
-              Let's start with some simple examples to understand how box shadows work in practice:
-            </p>
-            
-            <h3 className="text-xl font-medium mt-6 mb-3">1. Simple Drop Shadow</h3>
-            
-            <div className="my-4 p-4 bg-muted/30 rounded-md">
-              <pre className="text-sm overflow-x-auto">
-                <code>box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);</code>
-              </pre>
+            <div className="not-prose my-8">
+              <Tabs defaultValue="parameters" className="w-full">
+                <TabsList className="grid grid-cols-1 md:grid-cols-2 w-full h-auto">
+                  <TabsTrigger value="parameters">Shadow Parameters</TabsTrigger>
+                  <TabsTrigger value="examples">Basic Examples</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="parameters">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg font-semibold mb-2">Shadow Components Explained</h3>
+                      <p className="text-muted-foreground mb-4">
+                        Each parameter in the box-shadow property serves a specific purpose:
+                      </p>
+                      <ul className="list-disc pl-6 space-y-2">
+                        <li>
+                          <strong>inset</strong>: Optional. When present, the shadow is drawn inside the element, creating an inner shadow.
+                        </li>
+                        <li>
+                          <strong>x-offset</strong>: Required. Defines the horizontal distance of the shadow. Positive values position the shadow on the right of the element, negative values on the left.
+                        </li>
+                        <li>
+                          <strong>y-offset</strong>: Required. Defines the vertical distance of the shadow. Positive values position the shadow below the element, negative values above it.
+                        </li>
+                        <li>
+                          <strong>blur-radius</strong>: Optional. The larger the value, the bigger the blur effect, resulting in a more diffused shadow. Default is 0 (no blur).
+                        </li>
+                        <li>
+                          <strong>spread-radius</strong>: Optional. Positive values increase the size of the shadow, negative values decrease it. Default is 0 (shadow is the same size as the element).
+                        </li>
+                        <li>
+                          <strong>color</strong>: Optional. The color of the shadow. If not specified, it defaults to the text color of the element.
+                        </li>
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+                
+                <TabsContent value="examples">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg font-semibold mb-2">Basic Shadow Examples</h3>
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-medium">Simple Drop Shadow</h4>
+                          <div className="my-2 p-3 bg-muted/30 rounded-md">
+                            <pre className="text-xs overflow-x-auto">
+                              <code>box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);</code>
+                            </pre>
+                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            Creates a subtle shadow below the element with a slight blur, giving the impression that the element is slightly elevated from the page.
+                          </p>
+                        </div>
+                        <div>
+                          <h4 className="font-medium">Inset Shadow</h4>
+                          <div className="my-2 p-3 bg-muted/30 rounded-md">
+                            <pre className="text-xs overflow-x-auto">
+                              <code>box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);</code>
+                            </pre>
+                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            Creates an inner shadow, which makes the element appear recessed or pressed into the page. 
+                            It's commonly used for pressed buttons or inset form fields.
+                          </p>
+                        </div>
+                        <div>
+                          <h4 className="font-medium">Multiple Shadows</h4>
+                          <div className="my-2 p-3 bg-muted/30 rounded-md">
+                            <pre className="text-xs overflow-x-auto">
+                              <code>box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);</code>
+                            </pre>
+                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            CSS allows you to apply multiple shadows to the same element by separating them with commas. 
+                            This example creates a more realistic shadow with two layers of different intensity.
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </Tabs>
             </div>
-            
-            <p>
-              This creates a subtle shadow below the element with a slight blur, giving the impression that the element is slightly elevated from the page.
-            </p>
-            
-            <h3 className="text-xl font-medium mt-6 mb-3">2. Inset Shadow</h3>
-            
-            <div className="my-4 p-4 bg-muted/30 rounded-md">
-              <pre className="text-sm overflow-x-auto">
-                <code>box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);</code>
-              </pre>
-            </div>
-            
-            <p>
-              This creates an inner shadow, which makes the element appear recessed or pressed into the page. 
-              It's commonly used for pressed buttons or inset form fields.
-            </p>
-            
-            <h3 className="text-xl font-medium mt-6 mb-3">3. Multiple Shadows</h3>
-            
-            <div className="my-4 p-4 bg-muted/30 rounded-md">
-              <pre className="text-sm overflow-x-auto">
-                <code>box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);</code>
-              </pre>
-            </div>
-            
-            <p>
-              CSS allows you to apply multiple shadows to the same element by separating them with commas. 
-              This example creates a more realistic shadow with two layers of different intensity.
-            </p>
           </section>
             
           <section>
@@ -155,15 +173,17 @@ export default function BoxShadowGeneratorBlogPost() {
               sophisticated shadow effects.
             </p>
             
-            <h3 className="text-xl font-medium mt-6 mb-3">Material Design Elevation</h3>
-            
-            <p>
-              Google's Material Design system uses box shadows to create a consistent hierarchy of elevation.
-              Here's how to implement the most common Material Design shadow depths:
-            </p>
-            
-            <div className="my-4 p-4 bg-muted/30 rounded-md">
-              <pre className="text-sm overflow-x-auto">
+            <div className="not-prose my-8">
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="item-1">
+                  <AccordionTrigger>Material Design Elevation</AccordionTrigger>
+                  <AccordionContent>
+                    <p className="mb-3">
+                      Google's Material Design system uses box shadows to create a consistent hierarchy of elevation.
+                      Here's how to implement the most common Material Design shadow depths:
+                    </p>
+                    <div className="p-3 bg-muted/30 rounded-md">
+                      <pre className="text-xs overflow-x-auto">
 {`/* Level 1 (subtle) */
 box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 
@@ -178,23 +198,24 @@ box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 
 /* Level 5 (extreme) */
 box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);`}
-              </pre>
-            </div>
-            
-            <p>
-              These shadow values create a consistent system of elevation, which helps users understand 
-              the hierarchy and interaction model of your interface.
-            </p>
-            
-            <h3 className="text-xl font-medium mt-6 mb-3">Long Shadow Effect</h3>
-            
-            <p>
-              For a more dramatic and stylized look, you can create a "long shadow" effect using multiple 
-              layered shadows:
-            </p>
-            
-            <div className="my-4 p-4 bg-muted/30 rounded-md">
-              <pre className="text-sm overflow-x-auto">
+                      </pre>
+                    </div>
+                    <p className="mt-3 text-sm text-muted-foreground">
+                      These shadow values create a consistent system of elevation, which helps users understand 
+                      the hierarchy and interaction model of your interface.
+                    </p>
+                  </AccordionContent>
+                </AccordionItem>
+                
+                <AccordionItem value="item-2">
+                  <AccordionTrigger>Long Shadow Effect</AccordionTrigger>
+                  <AccordionContent>
+                    <p className="mb-3">
+                      For a more dramatic and stylized look, you can create a "long shadow" effect using multiple 
+                      layered shadows:
+                    </p>
+                    <div className="p-3 bg-muted/30 rounded-md">
+                      <pre className="text-xs overflow-x-auto">
 {`box-shadow: 
   1px 1px 0 rgba(0,0,0,0.2),
   2px 2px 0 rgba(0,0,0,0.2),
@@ -202,40 +223,42 @@ box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);`}
   4px 4px 0 rgba(0,0,0,0.2),
   5px 5px 0 rgba(0,0,0,0.2),
   6px 6px 0 rgba(0,0,0,0.2);`}
-              </pre>
-            </div>
-            
-            <p>
-              This technique creates a stacked shadow that extends in one direction, giving the element a striking 3D appearance.
-            </p>
-            
-            <h3 className="text-xl font-medium mt-6 mb-3">Glowing Effect</h3>
-            
-            <p>
-              Box shadows can also be used to create a glowing effect around elements, which is particularly 
-              effective for call-to-action buttons or to highlight important content:
-            </p>
-            
-            <div className="my-4 p-4 bg-muted/30 rounded-md">
-              <pre className="text-sm overflow-x-auto">
-                <code>box-shadow: 0 0 15px rgba(81, 203, 238, 1);</code>
-              </pre>
-            </div>
-            
-            <p>
-              For a more subtle glow, reduce the opacity of the color. You can also combine multiple shadows 
-              with different colors to create rainbow or gradient glow effects.
-            </p>
-            
-            <h3 className="text-xl font-medium mt-6 mb-3">Floating Element Effect</h3>
-            
-            <p>
-              To create a floating element effect, combine a subtle shadow with a hover state that increases 
-              the shadow's intensity:
-            </p>
-            
-            <div className="my-4 p-4 bg-muted/30 rounded-md">
-              <pre className="text-sm overflow-x-auto">
+                      </pre>
+                    </div>
+                    <p className="mt-3 text-sm text-muted-foreground">
+                      This technique creates a stacked shadow that extends in one direction, giving the element a striking 3D appearance.
+                    </p>
+                  </AccordionContent>
+                </AccordionItem>
+                
+                <AccordionItem value="item-3">
+                  <AccordionTrigger>Glowing Effect</AccordionTrigger>
+                  <AccordionContent>
+                    <p className="mb-3">
+                      Box shadows can also be used to create a glowing effect around elements, which is particularly 
+                      effective for call-to-action buttons or to highlight important content:
+                    </p>
+                    <div className="p-3 bg-muted/30 rounded-md">
+                      <pre className="text-xs overflow-x-auto">
+                        <code>box-shadow: 0 0 15px rgba(81, 203, 238, 1);</code>
+                      </pre>
+                    </div>
+                    <p className="mt-3 text-sm text-muted-foreground">
+                      For a more subtle glow, reduce the opacity of the color. You can also combine multiple shadows 
+                      with different colors to create rainbow or gradient glow effects.
+                    </p>
+                  </AccordionContent>
+                </AccordionItem>
+                
+                <AccordionItem value="item-4">
+                  <AccordionTrigger>Floating Element Effect</AccordionTrigger>
+                  <AccordionContent>
+                    <p className="mb-3">
+                      To create a floating element effect, combine a subtle shadow with a hover state that increases 
+                      the shadow's intensity:
+                    </p>
+                    <div className="p-3 bg-muted/30 rounded-md">
+                      <pre className="text-xs overflow-x-auto">
 {`.floating-element {
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   transition: box-shadow 0.3s ease;
@@ -244,12 +267,25 @@ box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);`}
 .floating-element:hover {
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }`}
-              </pre>
+                      </pre>
+                    </div>
+                    <p className="mt-3 text-sm text-muted-foreground">
+                      This creates a subtle animation effect where the element appears to lift off the page when hovered, 
+                      enhancing the interactive feel of your interface.
+                    </p>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </div>
             
-            <p>
-              This creates a subtle animation as the user hovers over the element, enhancing the sense of depth and interactivity.
-            </p>
+            <div className="my-6 p-4 bg-primary/10 rounded-md">
+              <p className="font-medium">Performance Tip:</p>
+              <p className="text-sm mt-2">
+                Complex box shadows, especially when applied to many elements, can impact rendering performance.
+                For optimal performance, consider using simpler shadows with fewer layers, animating the opacity
+                rather than the shadow itself, and using the <code>will-change</code> property when animating shadows.
+              </p>
+            </div>
           </section>
             
           <section>

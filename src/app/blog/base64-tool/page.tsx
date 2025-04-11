@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
 
 export const metadata = {
   title: "The Developer's Guide to Base64 Encoding and Decoding - DevToolBox",
@@ -37,6 +38,20 @@ export default function Base64ToolBlogPost() {
               for APIs, or working with email attachments, understanding Base64 is essential. This guide
               explores what Base64 is, how it works, and practical applications for modern web development.
             </p>
+            
+            <div className="my-6 p-4 bg-primary/5 rounded-md">
+              <div className="flex flex-col sm:flex-row gap-4 items-center">
+                <div className="flex-1">
+                  <h3 className="text-xl font-medium">Try Our Base64 Encoder/Decoder Tool</h3>
+                  <p className="text-muted-foreground mt-2">
+                    Easily encode and decode Base64 data with our interactive tool. Convert text, files, and images with a single click.
+                  </p>
+                </div>
+                <Button asChild className="shrink-0">
+                  <Link href="/tools/base64-tool">Try the Tool</Link>
+                </Button>
+              </div>
+            </div>
           </section>
 
           <section>
@@ -78,84 +93,123 @@ export default function Base64ToolBlogPost() {
               and representing them as 4 characters in the Base64 alphabet. Each character in the output represents 
               6 bits of the input data (6 bits × 4 characters = 24 bits = 3 bytes).
             </p>
-            <p>
-              The encoding process follows these steps:
-            </p>
-            <ol className="list-decimal pl-6 my-4 space-y-3">
-              <li>
-                <strong>Divide Input Data:</strong> The binary data is divided into groups of 3 bytes (24 bits).
-              </li>
-              <li>
-                <strong>Split into 6-bit Groups:</strong> Each 24-bit group is split into four 6-bit chunks.
-              </li>
-              <li>
-                <strong>Convert to Base64 Characters:</strong> Each 6-bit value (range 0-63) is mapped to a character in the Base64 alphabet.
-              </li>
-              <li>
-                <strong>Handle Padding:</strong> If the final group doesn't have all 3 bytes, padding with '=' characters is added to ensure the output length is a multiple of 4.
-              </li>
-            </ol>
             
-            <h3 className="text-xl font-medium mt-6 mb-3">Example: Encoding "Hello"</h3>
-            <div className="overflow-x-auto my-4">
-              <table className="min-w-full border-collapse">
-                <thead className="bg-muted/30">
-                  <tr>
-                    <th className="border px-4 py-2 text-left">Step</th>
-                    <th className="border px-4 py-2 text-left">Details</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="border px-4 py-2">Original ASCII</td>
-                    <td className="border px-4 py-2 font-mono">H e l l o</td>
-                  </tr>
-                  <tr>
-                    <td className="border px-4 py-2">ASCII Values</td>
-                    <td className="border px-4 py-2 font-mono">72 101 108 108 111</td>
-                  </tr>
-                  <tr>
-                    <td className="border px-4 py-2">Binary</td>
-                    <td className="border px-4 py-2 font-mono">01001000 01100101 01101100 01101100 01101111</td>
-                  </tr>
-                  <tr>
-                    <td className="border px-4 py-2">Group into 24 bits</td>
-                    <td className="border px-4 py-2 font-mono">010010000110010101101100 011011000110111</td>
-                  </tr>
-                  <tr>
-                    <td className="border px-4 py-2">Split into 6-bit chunks</td>
-                    <td className="border px-4 py-2 font-mono">010010 000110 010101 101100 011011 000110 111</td>
-                  </tr>
-                  <tr>
-                    <td className="border px-4 py-2">Decimal values</td>
-                    <td className="border px-4 py-2 font-mono">18 6 21 44 27 6 31 (+ padding)</td>
-                  </tr>
-                  <tr>
-                    <td className="border px-4 py-2">Base64 characters</td>
-                    <td className="border px-4 py-2 font-mono">S G V s b G 8 =</td>
-                  </tr>
-                  <tr>
-                    <td className="border px-4 py-2">Final Base64</td>
-                    <td className="border px-4 py-2 font-mono">SGVsbG8=</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            
-            <h3 className="text-xl font-medium mt-6 mb-3">Padding in Base64</h3>
-            <p>
-              When the original data length isn't a multiple of 3 bytes, padding is added:
-            </p>
-            <ul className="list-disc pl-6 my-4 space-y-1">
-              <li>If there's 1 byte remaining (8 bits), it's padded to 12 bits (2 Base64 chars) followed by two '=' characters</li>
-              <li>If there are 2 bytes remaining (16 bits), they're padded to 18 bits (3 Base64 chars) followed by one '=' character</li>
-            </ul>
-            <div className="my-6 p-4 bg-primary/10 rounded-md">
-              <p className="font-medium">Important Note:</p>
-              <p className="text-sm mt-2">
-                Base64 encoding increases the data size by approximately 33% (specifically, the size becomes 4/3 of the original).
-                This overhead is the price paid for making binary data text-safe.
-              </p>
+            <div className="not-prose my-8">
+              <Tabs defaultValue="process" className="w-full">
+                <TabsList className="grid grid-cols-1 md:grid-cols-3 w-full h-auto">
+                  <TabsTrigger value="process">Encoding Process</TabsTrigger>
+                  <TabsTrigger value="example">Encoding Example</TabsTrigger>
+                  <TabsTrigger value="padding">Padding</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="process">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg font-semibold mb-2">The Encoding Process</h3>
+                      <p className="text-muted-foreground mb-4">
+                        The encoding process follows these steps:
+                      </p>
+                      <ol className="list-decimal pl-6 my-4 space-y-2">
+                        <li>
+                          <strong>Divide Input Data:</strong> The binary data is divided into groups of 3 bytes (24 bits).
+                        </li>
+                        <li>
+                          <strong>Split into 6-bit Groups:</strong> Each 24-bit group is split into four 6-bit chunks.
+                        </li>
+                        <li>
+                          <strong>Convert to Base64 Characters:</strong> Each 6-bit value (range 0-63) is mapped to a character in the Base64 alphabet.
+                        </li>
+                        <li>
+                          <strong>Handle Padding:</strong> If the final group doesn't have all 3 bytes, padding with '=' characters is added to ensure the output length is a multiple of 4.
+                        </li>
+                      </ol>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+                
+                <TabsContent value="example">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg font-semibold mb-2">Encoding "Hello" Example</h3>
+                      <div className="overflow-x-auto">
+                        <table className="min-w-full border-collapse">
+                          <thead className="bg-muted/30">
+                            <tr>
+                              <th className="border px-4 py-2 text-left">Step</th>
+                              <th className="border px-4 py-2 text-left">Details</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td className="border px-4 py-2">Original ASCII</td>
+                              <td className="border px-4 py-2 font-mono">H e l l o</td>
+                            </tr>
+                            <tr>
+                              <td className="border px-4 py-2">ASCII Values</td>
+                              <td className="border px-4 py-2 font-mono">72 101 108 108 111</td>
+                            </tr>
+                            <tr>
+                              <td className="border px-4 py-2">Binary</td>
+                              <td className="border px-4 py-2 font-mono">01001000 01100101 01101100 01101100 01101111</td>
+                            </tr>
+                            <tr>
+                              <td className="border px-4 py-2">Group into 24 bits</td>
+                              <td className="border px-4 py-2 font-mono">010010000110010101101100 011011000110111</td>
+                            </tr>
+                            <tr>
+                              <td className="border px-4 py-2">Split into 6-bit chunks</td>
+                              <td className="border px-4 py-2 font-mono">010010 000110 010101 101100 011011 000110 111</td>
+                            </tr>
+                            <tr>
+                              <td className="border px-4 py-2">Decimal values</td>
+                              <td className="border px-4 py-2 font-mono">18 6 21 44 27 6 31 (+ padding)</td>
+                            </tr>
+                            <tr>
+                              <td className="border px-4 py-2">Base64 characters</td>
+                              <td className="border px-4 py-2 font-mono">S G V s b G 8 =</td>
+                            </tr>
+                            <tr>
+                              <td className="border px-4 py-2">Final Base64</td>
+                              <td className="border px-4 py-2 font-mono">SGVsbG8=</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+                
+                <TabsContent value="padding">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg font-semibold mb-2">Padding in Base64</h3>
+                      <p className="text-muted-foreground mb-4">
+                        When the original data length isn't a multiple of 3 bytes, padding is added:
+                      </p>
+                      <ul className="list-disc pl-6 my-4 space-y-2">
+                        <li>If there's 1 byte remaining (8 bits), it's padded to 12 bits (2 Base64 chars) followed by two '=' characters</li>
+                        <li>If there are 2 bytes remaining (16 bits), they're padded to 18 bits (3 Base64 chars) followed by one '=' character</li>
+                      </ul>
+                      <div className="mt-4 p-4 bg-muted/30 rounded-md">
+                        <pre className="text-xs overflow-x-auto">
+{`// Original: "A" (1 byte)
+Base64: "QQ==" (2 chars + 2 padding)
+
+// Original: "AB" (2 bytes)
+Base64: "QUI=" (3 chars + 1 padding)
+
+// Original: "ABC" (3 bytes)
+Base64: "QUJD" (4 chars, no padding needed)`}
+                        </pre>
+                      </div>
+                      <p className="text-sm text-muted-foreground mt-4">
+                        <strong>Note:</strong> Base64 encoding increases the data size by approximately 33% (specifically, the size becomes 4/3 of the original).
+                        This overhead is the price paid for making binary data text-safe.
+                      </p>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </Tabs>
             </div>
           </section>
           
@@ -188,30 +242,48 @@ SGVsbG8gV29ybGQh-_`}
           <section>
             <h2 className="text-2xl font-bold mt-8 mb-4">Common Use Cases for Base64</h2>
             
-            <h3 className="text-xl font-medium mt-6 mb-3">1. Data URIs in HTML/CSS</h3>
-            <p>
-              Data URIs allow embedding small images, fonts, or other resources directly into HTML or CSS,
-              reducing HTTP requests.
-            </p>
-            <div className="my-4 p-4 bg-muted/30 rounded-md">
-              <pre className="text-sm overflow-x-auto">
+            <div className="not-prose my-8">
+              <Tabs defaultValue="data-uris" className="w-full">
+                <TabsList className="grid grid-cols-1 md:grid-cols-4 w-full h-auto">
+                  <TabsTrigger value="data-uris">Data URIs</TabsTrigger>
+                  <TabsTrigger value="json">JSON APIs</TabsTrigger>
+                  <TabsTrigger value="email">Email</TabsTrigger>
+                  <TabsTrigger value="auth">Authentication</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="data-uris">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg font-semibold mb-2">Data URIs in HTML/CSS</h3>
+                      <p className="text-muted-foreground mb-4">
+                        Data URIs allow embedding small images, fonts, or other resources directly into HTML or CSS,
+                        reducing HTTP requests.
+                      </p>
+                      <div className="p-3 bg-muted/30 rounded-md">
+                        <pre className="text-xs overflow-x-auto">
 {`/* CSS with embedded image */
 .logo {
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA...');
 }`}
-              </pre>
-            </div>
-            <p>
-              This technique is particularly useful for small icons or simple graphics, but should be avoided for larger
-              images as it increases the CSS file size and isn't cached separately.
-            </p>
-            
-            <h3 className="text-xl font-medium mt-6 mb-3">2. JSON APIs and Data Transport</h3>
-            <p>
-              When sending binary data via JSON (which only supports text), Base64 encoding is necessary:
-            </p>
-            <div className="my-4 p-4 bg-muted/30 rounded-md">
-              <pre className="text-sm overflow-x-auto">
+                        </pre>
+                      </div>
+                      <p className="text-sm text-muted-foreground mt-3">
+                        This technique is particularly useful for small icons or simple graphics, but should be avoided for larger
+                        images as it increases the CSS file size and isn't cached separately.
+                      </p>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+                
+                <TabsContent value="json">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg font-semibold mb-2">JSON APIs and Data Transport</h3>
+                      <p className="text-muted-foreground mb-4">
+                        When sending binary data via JSON (which only supports text), Base64 encoding is necessary:
+                      </p>
+                      <div className="p-3 bg-muted/30 rounded-md">
+                        <pre className="text-xs overflow-x-auto">
 {`{
   "username": "developer123",
   "profileImage": {
@@ -219,38 +291,72 @@ SGVsbG8gV29ybGQh-_`}
     "contentType": "image/png"
   }
 }`}
-              </pre>
-            </div>
-            
-            <h3 className="text-xl font-medium mt-6 mb-3">3. Email Attachments (MIME)</h3>
-            <p>
-              Email protocols were originally designed for text. MIME (Multipurpose Internet Mail Extensions)
-              uses Base64 to encode binary attachments within emails.
-            </p>
-            
-            <h3 className="text-xl font-medium mt-6 mb-3">4. Basic Authentication Headers</h3>
-            <p>
-              HTTP Basic Authentication transmits credentials (username:password) in Base64 format:
-            </p>
-            <div className="my-4 p-4 bg-muted/30 rounded-md">
-              <pre className="text-sm overflow-x-auto">
+                        </pre>
+                      </div>
+                      <p className="text-sm text-muted-foreground mt-3">
+                        This pattern is common when working with REST APIs that need to transmit binary data such as
+                        images, audio files, or documents within a JSON payload.
+                      </p>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+                
+                <TabsContent value="email">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg font-semibold mb-2">Email Attachments (MIME)</h3>
+                      <p className="text-muted-foreground mb-4">
+                        Email protocols were originally designed for text. MIME (Multipurpose Internet Mail Extensions)
+                        uses Base64 to encode binary attachments within emails.
+                      </p>
+                      <div className="p-3 bg-muted/30 rounded-md">
+                        <pre className="text-xs overflow-x-auto">
+{`MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="boundary-example"
+
+--boundary-example
+Content-Type: text/plain
+
+This is the email body text.
+
+--boundary-example
+Content-Type: image/jpeg
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="photo.jpg"
+
+/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMDAwYEBAMF...
+`}
+                        </pre>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+                
+                <TabsContent value="auth">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg font-semibold mb-2">Basic Authentication Headers</h3>
+                      <p className="text-muted-foreground mb-4">
+                        HTTP Basic Authentication transmits credentials (username:password) in Base64 format:
+                      </p>
+                      <div className="p-3 bg-muted/30 rounded-md">
+                        <pre className="text-xs overflow-x-auto">
 {`Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=`}
-              </pre>
+                        </pre>
+                      </div>
+                      <div className="p-4 bg-primary/10 rounded-md mt-4">
+                        <p className="font-medium">Security Warning:</p>
+                        <p className="text-sm mt-2">
+                          Base64 encoding is NOT encryption. It's merely an encoding scheme and provides no security.
+                          Base64-encoded data can be easily decoded. Never use it to protect sensitive information
+                          without proper encryption.
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </Tabs>
             </div>
-            <div className="my-6 p-4 bg-primary/10 rounded-md">
-              <p className="font-medium">Security Warning:</p>
-              <p className="text-sm mt-2">
-                Base64 encoding is NOT encryption. It's merely an encoding scheme and provides no security.
-                Base64-encoded data can be easily decoded. Never use it to protect sensitive information
-                without proper encryption.
-              </p>
-            </div>
-            
-            <h3 className="text-xl font-medium mt-6 mb-3">5. File Data in Web Applications</h3>
-            <p>
-              Web applications often use Base64 for file uploads/downloads, especially in single-page applications
-              where direct binary handling is challenging.
-            </p>
           </section>
           
           <section>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
 
 export const metadata = {
   title: "QR Codes: A Comprehensive Guide to Generation and Best Practices - DevToolBox",
@@ -31,6 +32,33 @@ export default function QRCodeGeneratorBlogPost() {
         
         <div className="space-y-6">
           <section>
+            <p className="lead">
+              QR (Quick Response) codes have become ubiquitous in our digital world, serving as efficient bridges 
+              between physical and digital realms. From contactless payments to product tracking, QR codes offer 
+              a versatile and user-friendly way to encode and access information with just a smartphone scan.
+            </p>
+            
+            <p>
+              In this comprehensive guide, we'll explore the technology behind QR codes, their various applications, 
+              and best practices for implementing them effectively in your websites and applications.
+            </p>
+            
+            <div className="my-6 p-4 bg-primary/5 rounded-md">
+              <div className="flex flex-col sm:flex-row gap-4 items-center">
+                <div className="flex-1">
+                  <h3 className="text-xl font-medium">Try Our QR Code Generator Tool</h3>
+                  <p className="text-muted-foreground mt-2">
+                    Create customized QR codes for URLs, text, contact information, and more with our interactive tool. Download your QR codes in various formats.
+                  </p>
+                </div>
+                <Button asChild className="shrink-0">
+                  <Link href="/tools/qr-code-generator">Try the Tool</Link>
+                </Button>
+              </div>
+            </div>
+          </section>
+
+          <section>
             <h2 className="text-2xl font-bold mt-8 mb-4">What are QR Codes?</h2>
             <p>
               QR (Quick Response) codes are two-dimensional matrix barcodes that store information in a square grid
@@ -59,30 +87,39 @@ export default function QRCodeGeneratorBlogPost() {
               QR codes work by encoding data in a visual pattern that can be quickly scanned and interpreted by
               digital devices. The structure of a QR code includes several components:
             </p>
-            <ul className="list-disc pl-6 my-4">
-              <li>
-                <strong>Finder Patterns:</strong> The three large squares in the corners help scanners identify the
-                QR code and determine its orientation.
-              </li>
-              <li>
-                <strong>Alignment Pattern:</strong> Helps correct distortion when the QR code is scanned at an angle
-                or on a curved surface.
-              </li>
-              <li>
-                <strong>Timing Patterns:</strong> The dotted lines between the finder patterns help the scanner determine
-                the size of the data cells.
-              </li>
-              <li>
-                <strong>Version Information:</strong> Indicates which QR code version is being used (1-40).
-              </li>
-              <li>
-                <strong>Data and Error Correction Cells:</strong> The actual encoded information and redundancy data
-                for error correction.
-              </li>
-              <li>
-                <strong>Quiet Zone:</strong> The blank margin around the QR code that makes it easier to scan.
-              </li>
-            </ul>
+            
+            <div className="not-prose my-8">
+              <Card>
+                <CardContent className="pt-6">
+                  <h3 className="text-lg font-semibold mb-3">QR Code Structure</h3>
+                  <ul className="list-disc pl-6 space-y-2">
+                    <li>
+                      <strong>Finder Patterns:</strong> The three large squares in the corners help scanners identify the
+                      QR code and determine its orientation.
+                    </li>
+                    <li>
+                      <strong>Alignment Pattern:</strong> Helps correct distortion when the QR code is scanned at an angle
+                      or on a curved surface.
+                    </li>
+                    <li>
+                      <strong>Timing Patterns:</strong> The dotted lines between the finder patterns help the scanner determine
+                      the size of the data cells.
+                    </li>
+                    <li>
+                      <strong>Version Information:</strong> Indicates which QR code version is being used (1-40).
+                    </li>
+                    <li>
+                      <strong>Data and Error Correction Cells:</strong> The actual encoded information and redundancy data
+                      for error correction.
+                    </li>
+                    <li>
+                      <strong>Quiet Zone:</strong> The blank margin around the QR code that makes it easier to scan.
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
+            
             <p>
               When a QR code is scanned, the device's camera captures the pattern, the QR reader software analyzes
               the image, interprets the encoded data using the error correction algorithm, and then performs the
@@ -97,47 +134,97 @@ export default function QRCodeGeneratorBlogPost() {
               allows them to be readable even when partially damaged, dirty, or obscured. This is achieved using
               Reed-Solomon error correction, which adds redundant data to the code.
             </p>
-            <p>
-              There are four error correction levels to choose from:
-            </p>
-            <div className="overflow-x-auto my-6">
-              <table className="min-w-full border-collapse">
-                <thead className="bg-muted/30">
-                  <tr>
-                    <th className="border px-4 py-2 text-left">Level</th>
-                    <th className="border px-4 py-2 text-left">Recovery Capacity</th>
-                    <th className="border px-4 py-2 text-left">Best Used For</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="border px-4 py-2"><strong>L (Low)</strong></td>
-                    <td className="border px-4 py-2">Recovers up to 7% of data</td>
-                    <td className="border px-4 py-2">Situations with minimal risk of damage; maximizes data capacity</td>
-                  </tr>
-                  <tr>
-                    <td className="border px-4 py-2"><strong>M (Medium)</strong></td>
-                    <td className="border px-4 py-2">Recovers up to 15% of data</td>
-                    <td className="border px-4 py-2">General use; good balance between data capacity and durability</td>
-                  </tr>
-                  <tr>
-                    <td className="border px-4 py-2"><strong>Q (Quartile)</strong></td>
-                    <td className="border px-4 py-2">Recovers up to 25% of data</td>
-                    <td className="border px-4 py-2">Industrial or environmental exposure where damage is likely</td>
-                  </tr>
-                  <tr>
-                    <td className="border px-4 py-2"><strong>H (High)</strong></td>
-                    <td className="border px-4 py-2">Recovers up to 30% of data</td>
-                    <td className="border px-4 py-2">Outdoor use or when the code is likely to be damaged or obscured</td>
-                  </tr>
-                </tbody>
-              </table>
+            
+            <div className="not-prose my-8">
+              <Tabs defaultValue="levels" className="w-full">
+                <TabsList className="grid grid-cols-1 md:grid-cols-2 w-full h-auto">
+                  <TabsTrigger value="levels">Error Correction Levels</TabsTrigger>
+                  <TabsTrigger value="examples">Visual Examples</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="levels">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg font-semibold mb-2">Error Correction Levels</h3>
+                      <p className="text-muted-foreground mb-4">
+                        There are four error correction levels to choose from:
+                      </p>
+                      <div className="overflow-x-auto">
+                        <table className="min-w-full border-collapse">
+                          <thead className="bg-muted/30">
+                            <tr>
+                              <th className="border px-4 py-2 text-left">Level</th>
+                              <th className="border px-4 py-2 text-left">Recovery Capacity</th>
+                              <th className="border px-4 py-2 text-left">Best Used For</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td className="border px-4 py-2"><strong>L (Low)</strong></td>
+                              <td className="border px-4 py-2">Recovers up to 7% of data</td>
+                              <td className="border px-4 py-2">Situations with minimal risk of damage; maximizes data capacity</td>
+                            </tr>
+                            <tr>
+                              <td className="border px-4 py-2"><strong>M (Medium)</strong></td>
+                              <td className="border px-4 py-2">Recovers up to 15% of data</td>
+                              <td className="border px-4 py-2">General use; good balance between data capacity and durability</td>
+                            </tr>
+                            <tr>
+                              <td className="border px-4 py-2"><strong>Q (Quartile)</strong></td>
+                              <td className="border px-4 py-2">Recovers up to 25% of data</td>
+                              <td className="border px-4 py-2">Industrial or environmental exposure where damage is likely</td>
+                            </tr>
+                            <tr>
+                              <td className="border px-4 py-2"><strong>H (High)</strong></td>
+                              <td className="border px-4 py-2">Recovers up to 30% of data</td>
+                              <td className="border px-4 py-2">Outdoor use or when the code is likely to be damaged or obscured</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <p className="text-sm text-muted-foreground mt-4">
+                        Higher error correction levels make the QR code more reliable but also increase its complexity
+                        (requiring more data cells to store the same information), which may make the QR code larger or
+                        require smaller cells.
+                      </p>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+                
+                <TabsContent value="examples">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <h3 className="text-lg font-semibold mb-2">Error Correction in Action</h3>
+                      <p className="text-muted-foreground mb-4">
+                        QR codes can still function even when partially damaged or covered:
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+                        <div className="p-3 bg-muted/30 rounded-md text-center">
+                          <div className="mb-2">QR with logo (H-level correction)</div>
+                          <div className="h-40 bg-gray-200 flex items-center justify-center">
+                            <span className="text-xs text-gray-500">Logo QR code image</span>
+                          </div>
+                        </div>
+                        <div className="p-3 bg-muted/30 rounded-md text-center">
+                          <div className="mb-2">QR with ~25% damage (Q-level correction)</div>
+                          <div className="h-40 bg-gray-200 flex items-center justify-center">
+                            <span className="text-xs text-gray-500">Damaged QR code image</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="p-4 bg-primary/10 rounded-md mt-4">
+                        <p className="font-medium">Design Tip:</p>
+                        <p className="text-sm mt-2">
+                          When adding a logo or design element to a QR code, use the highest error correction level (H)
+                          and keep the modification within the center 30% of the code. Always test your QR code with
+                          multiple scanners to ensure it works reliably.
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </Tabs>
             </div>
-            <p>
-              Higher error correction levels make the QR code more reliable but also increase its complexity
-              (requiring more data cells to store the same information), which may make the QR code larger or
-              require smaller cells.
-            </p>
           </section>
           
           <section>
@@ -145,64 +232,158 @@ export default function QRCodeGeneratorBlogPost() {
             <p>
               QR codes can encode various types of information, making them versatile for different applications:
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
-              <div className="p-4 border border-muted rounded-md">
-                <h3 className="text-xl font-medium mb-3">URL / Website</h3>
-                <p className="text-sm mb-2">
-                  The most common use of QR codes is to open a website URL when scanned.
-                </p>
-                <pre className="text-xs bg-muted/30 p-2 rounded">https://www.example.com</pre>
-              </div>
-              
-              <div className="p-4 border border-muted rounded-md">
-                <h3 className="text-xl font-medium mb-3">Email</h3>
-                <p className="text-sm mb-2">
-                  Initiate an email with pre-filled recipient, subject, and body.
-                </p>
-                <pre className="text-xs bg-muted/30 p-2 rounded">mailto:example@example.com?subject=Hello&body=Message</pre>
-              </div>
-              
-              <div className="p-4 border border-muted rounded-md">
-                <h3 className="text-xl font-medium mb-3">SMS / Text Message</h3>
-                <p className="text-sm mb-2">
-                  Prepare a text message with a recipient and message content.
-                </p>
-                <pre className="text-xs bg-muted/30 p-2 rounded">smsto:+1234567890:Hello there!</pre>
-              </div>
-              
-              <div className="p-4 border border-muted rounded-md">
-                <h3 className="text-xl font-medium mb-3">WiFi Network</h3>
-                <p className="text-sm mb-2">
-                  Connect to a WiFi network without typing the credentials.
-                </p>
-                <pre className="text-xs bg-muted/30 p-2 rounded">WIFI:S:NetworkName;T:WPA;P:Password;;</pre>
-              </div>
-              
-              <div className="p-4 border border-muted rounded-md">
-                <h3 className="text-xl font-medium mb-3">Contact Information (vCard)</h3>
-                <p className="text-sm mb-2">
-                  Share complete contact information in vCard format.
-                </p>
-                <pre className="text-xs bg-muted/30 p-2 rounded">BEGIN:VCARD
+            <div className="not-prose my-8">
+              <Tabs defaultValue="web" className="w-full">
+                <TabsList className="grid grid-cols-2 md:grid-cols-3 w-full h-auto">
+                  <TabsTrigger value="web">Web & Text</TabsTrigger>
+                  <TabsTrigger value="contact">Contact & Location</TabsTrigger>
+                  <TabsTrigger value="wifi">WiFi & Settings</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="web">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <h3 className="text-lg font-semibold mb-2">URL / Website</h3>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            The most common use of QR codes is to open a website URL when scanned.
+                          </p>
+                          <pre className="text-xs bg-muted/30 p-2 rounded">https://www.example.com</pre>
+                        </div>
+                        
+                        <div>
+                          <h3 className="text-lg font-semibold mb-2">Plain Text</h3>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            QR codes can contain plain text messages that display when scanned.
+                          </p>
+                          <pre className="text-xs bg-muted/30 p-2 rounded">This is a simple text message encoded in a QR code.</pre>
+                        </div>
+                        
+                        <div>
+                          <h3 className="text-lg font-semibold mb-2">Email</h3>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            Initiate an email with pre-filled recipient, subject, and body.
+                          </p>
+                          <pre className="text-xs bg-muted/30 p-2 rounded">mailto:example@example.com?subject=Hello&body=Message</pre>
+                        </div>
+                        
+                        <div>
+                          <h3 className="text-lg font-semibold mb-2">SMS / Text Message</h3>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            Prepare a text message with a recipient and message content.
+                          </p>
+                          <pre className="text-xs bg-muted/30 p-2 rounded">smsto:+1234567890:Hello there!</pre>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+                
+                <TabsContent value="contact">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <h3 className="text-lg font-semibold mb-2">Contact Information (vCard)</h3>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            Share complete contact information in vCard format.
+                          </p>
+                          <pre className="text-xs bg-muted/30 p-2 rounded">BEGIN:VCARD
 VERSION:3.0
 N:Doe;John;;;
 FN:John Doe
 TEL:+1234567890
 EMAIL:john@example.com
 END:VCARD</pre>
-              </div>
-              
-              <div className="p-4 border border-muted rounded-md">
-                <h3 className="text-xl font-medium mb-3">Geolocation</h3>
-                <p className="text-sm mb-2">
-                  Share a specific location that opens in a map application.
-                </p>
-                <pre className="text-xs bg-muted/30 p-2 rounded">geo:37.786971,-122.399677</pre>
-              </div>
+                        </div>
+                        
+                        <div>
+                          <h3 className="text-lg font-semibold mb-2">Geolocation</h3>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            Share a specific location that opens in a map application.
+                          </p>
+                          <pre className="text-xs bg-muted/30 p-2 rounded">geo:37.786971,-122.399677</pre>
+                        </div>
+                        
+                        <div>
+                          <h3 className="text-lg font-semibold mb-2">Calendar Event</h3>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            Add an event to the calendar with details and timing.
+                          </p>
+                          <pre className="text-xs bg-muted/30 p-2 rounded">BEGIN:VEVENT
+SUMMARY:Meeting
+DTSTART:20250520T100000Z
+DTEND:20250520T110000Z
+LOCATION:Conference Room
+END:VEVENT</pre>
+                        </div>
+                        
+                        <div>
+                          <h3 className="text-lg font-semibold mb-2">Phone Call</h3>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            Initiate a phone call to a specific number.
+                          </p>
+                          <pre className="text-xs bg-muted/30 p-2 rounded">tel:+1234567890</pre>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+                
+                <TabsContent value="wifi">
+                  <Card>
+                    <CardContent className="pt-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <h3 className="text-lg font-semibold mb-2">WiFi Network</h3>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            Connect to a WiFi network without typing the credentials.
+                          </p>
+                          <pre className="text-xs bg-muted/30 p-2 rounded">WIFI:S:NetworkName;T:WPA;P:Password;;</pre>
+                        </div>
+                        
+                        <div>
+                          <h3 className="text-lg font-semibold mb-2">Payment Information</h3>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            Encode payment details for mobile transactions.
+                          </p>
+                          <pre className="text-xs bg-muted/30 p-2 rounded overflow-auto">BCD
+001
+1
+SCT
+ABCDEF2G
+Example Bank
+DE91100000000123456789
+EUR123.45
+RFBNL21XXX</pre>
+                        </div>
+                        
+                        <div>
+                          <h3 className="text-lg font-semibold mb-2">App Store Links</h3>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            Direct users to app downloads on various platforms.
+                          </p>
+                          <pre className="text-xs bg-muted/30 p-2 rounded">https://play.google.com/store/apps/details?id=com.example.app</pre>
+                        </div>
+                        
+                        <div>
+                          <h3 className="text-lg font-semibold mb-2">Cryptocurrency</h3>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            Share cryptocurrency addresses for transactions.
+                          </p>
+                          <pre className="text-xs bg-muted/30 p-2 rounded overflow-auto">bitcoin:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=0.05</pre>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </Tabs>
             </div>
+            
             <p>
-              Beyond these common formats, QR codes can also contain calendar events, payment information,
-              cryptocurrency addresses, and even arbitrary binary data for custom applications.
+              Beyond these common formats, QR codes can also contain arbitrary binary data for custom applications
+              and specialized use cases.
             </p>
           </section>
           
