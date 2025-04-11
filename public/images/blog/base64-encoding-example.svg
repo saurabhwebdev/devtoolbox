@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" width="800" height="300">
+  <!-- Styles -->
+  <style>
+    .box { fill: #f1f5f9; stroke: #64748b; stroke-width: 2; rx: 8; }
+    .arrow { stroke: #0f172a; stroke-width: 2; marker-end: url(#arrowhead); }
+    .text { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #334155; }
+    .mono { font-family: monospace; font-size: 14px; fill: #334155; }
+    .bold { font-weight: bold; }
+    .binary { fill: #bfdbfe; stroke: #3b82f6; }
+    .base64 { fill: #bbf7d0; stroke: #22c55e; }
+    .process { fill: #fde68a; stroke: #eab308; }
+  </style>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0f172a" />
+    </marker>
+  </defs>
+  
+  <!-- Binary data box -->
+  <rect x="50" y="80" width="150" height="60" class="box binary" />
+  <text x="125" y="110" text-anchor="middle" class="text bold">Binary Data</text>
+  <text x="125" y="130" text-anchor="middle" class="mono">01001000 01100101...</text>
+  
+  <!-- First process arrow -->
+  <line x1="200" y1="110" x2="300" y2="110" class="arrow" />
+  <text x="250" y="95" text-anchor="middle" class="text">Step 1: Group into</text>
+  <text x="250" y="115" text-anchor="middle" class="text">24-bit chunks</text>
+  
+  <!-- Process box 1 -->
+  <rect x="300" y="60" width="200" height="100" class="box process" />
+  <text x="400" y="90" text-anchor="middle" class="text bold">Base64 Encoding Process</text>
+  <text x="400" y="115" text-anchor="middle" class="text">1. Group 24 bits (3 bytes)</text>
+  <text x="400" y="135" text-anchor="middle" class="text">2. Split into 6-bit chunks</text>
+  <text x="400" y="155" text-anchor="middle" class="text">3. Map to character set</text>
+  
+  <!-- Second process arrow -->
+  <line x1="500" y1="110" x2="600" y2="110" class="arrow" />
+  <text x="550" y="95" text-anchor="middle" class="text">Step 2: Convert</text>
+  <text x="550" y="115" text-anchor="middle" class="text">to Base64 chars</text>
+  
+  <!-- Base64 output box -->
+  <rect x="600" y="80" width="150" height="60" class="box base64" />
+  <text x="675" y="110" text-anchor="middle" class="text bold">Base64 Text</text>
+  <text x="675" y="130" text-anchor="middle" class="mono">SGVsbG8=</text>
+  
+  <!-- Character set -->
+  <rect x="100" y="200" width="600" height="40" class="box" />
+  <text x="400" y="225" text-anchor="middle" class="text bold">Base64 Character Set (64 characters)</text>
+  
+  <!-- Character groups -->
+  <text x="200" y="250" text-anchor="middle" class="text">A-Z, a-z, 0-9, +, /</text>
+  <text x="500" y="250" text-anchor="middle" class="text">Each character represents 6 bits of data</text>
+  
+  <!-- Code conversion example -->
+  <text x="250" y="280" text-anchor="middle" class="text mono">010010 = S</text>
+  <text x="450" y="280" text-anchor="middle" class="text mono">000110 = G</text>
+  <text x="650" y="280" text-anchor="middle" class="text mono">010101 = V</text>
+</svg> 

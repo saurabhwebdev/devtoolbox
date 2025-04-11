@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <!-- Styles -->
+  <style>
+    .box { fill: #f1f5f9; stroke: #64748b; stroke-width: 2; }
+    .arrow { stroke: #0f172a; stroke-width: 2; marker-end: url(#arrowhead); }
+    .text { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; fill: #334155; }
+    .bold { font-weight: bold; }
+    .jwt { fill: #3b82f6; stroke: #2563eb; }
+    .client { fill: #f97316; }
+    .server { fill: #10b981; }
+  </style>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0f172a" />
+    </marker>
+  </defs>
+  
+  <!-- Client Box -->
+  <rect x="100" y="50" width="150" height="300" rx="10" class="box" />
+  <text x="175" y="80" text-anchor="middle" class="text bold">Client</text>
+  
+  <!-- Server Box -->
+  <rect x="550" y="50" width="150" height="300" rx="10" class="box" />
+  <text x="625" y="80" text-anchor="middle" class="text bold">Server</text>
+  
+  <!-- Step 1: Login -->
+  <text x="175" y="120" text-anchor="middle" class="text">User Logs In</text>
+  <line x1="250" y1="120" x2="550" y2="120" class="arrow" />
+  <text x="400" y="110" text-anchor="middle" class="text">1. Credentials</text>
+  
+  <!-- Step 2: Server validates and creates JWT -->
+  <text x="625" y="160" text-anchor="middle" class="text">Validates Credentials</text>
+  <text x="625" y="180" text-anchor="middle" class="text">Creates JWT</text>
+  
+  <!-- Step 3: Server returns JWT -->
+  <line x1="550" y1="200" x2="250" y2="200" class="arrow" />
+  <text x="400" y="190" text-anchor="middle" class="text">2. JWT Token</text>
+  
+  <!-- JWT Token visual -->
+  <rect x="350" y="210" width="100" height="25" rx="4" class="jwt" />
+  <text x="400" y="227" text-anchor="middle" class="text" fill="white">JWT Token</text>
+  
+  <!-- Step 4: Client stores token -->
+  <text x="175" y="240" text-anchor="middle" class="text">Stores Token</text>
+  
+  <!-- Step 5: API Request with token -->
+  <text x="175" y="280" text-anchor="middle" class="text">Makes API Request</text>
+  <line x1="250" y1="280" x2="550" y2="280" class="arrow" />
+  <text x="400" y="270" text-anchor="middle" class="text">3. Request + JWT</text>
+  
+  <!-- Step 6: Server validates token -->
+  <text x="625" y="300" text-anchor="middle" class="text">Validates Token</text>
+  
+  <!-- Step 7: Server returns protected resource -->
+  <line x1="550" y1="320" x2="250" y2="320" class="arrow" />
+  <text x="400" y="340" text-anchor="middle" class="text">4. Protected Resource</text>
+  
+  <!-- Legend -->
+  <rect x="650" y="370" width="15" height="15" class="jwt" />
+  <text x="670" y="382" class="text">JWT Token</text>
+</svg> 
