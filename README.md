@@ -31,6 +31,23 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This project is configured for easy deployment on Vercel. Follow these steps to deploy:
+
+1. Push your code to a GitHub, GitLab, or Bitbucket repository
+2. Import your project to Vercel:
+   - Go to https://vercel.com/new
+   - Select your Git provider and repository
+   - Vercel will automatically detect Next.js and use the optimal build settings
+   - Click "Deploy"
+
+The project includes a `vercel.json` configuration file with security headers and deployment settings.
+
+### Environment Variables
+
+No specific environment variables are required for this project.
+
+### Deployment Preview
+
+Each pull request will generate a unique deployment preview URL where you can test changes before merging to the main branch.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
