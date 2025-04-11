@@ -164,7 +164,8 @@ export default function JwtDecoderPage() {
       let key;
       try {
         if (alg.startsWith('HS')) {
-          key = await jose.importSecret(secretBuffer);
+          // Use direct verification without importSecret
+          key = secretBuffer;
         } else {
           // For RS, ES, PS algorithms, a public key would be needed
           setVerificationStatus(VerificationStatus.ERROR);

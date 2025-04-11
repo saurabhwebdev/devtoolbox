@@ -4,7 +4,6 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactStrictMode: true,
   poweredByHeader: false,
-  swcMinify: true,
   images: {
     domains: [],
     formats: ['image/avif', 'image/webp']
