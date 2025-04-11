@@ -1,7 +1,7 @@
 import { initializeApp, getApps, FirebaseApp } from 'firebase/app';
 import { getFirestore, collection, addDoc, serverTimestamp, Firestore } from 'firebase/firestore';
 import { getAnalytics, Analytics } from 'firebase/analytics';
-import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, User, Auth } from 'firebase/auth';
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged as _onAuthStateChanged, User, Auth } from 'firebase/auth';
 import { FeedbackData, ToolRequestData, ContactFormData, FeedbackResponse } from '@/types/firebase';
 
 // Firebase configuration
@@ -28,11 +28,11 @@ const isFirebaseConfigValid = () => {
 };
 
 // Initialize Firebase with SSR safety
-let app: FirebaseApp;
-let db: Firestore;
-let auth: Auth;
+let app: FirebaseApp | undefined;
+let db: Firestore | undefined;
+let auth: Auth | undefined;
 let analytics: Analytics | null = null;
-let googleProvider: GoogleAuthProvider;
+let googleProvider: GoogleAuthProvider | undefined;
 
 // Only initialize Firebase if not in SSR and config is valid
 if (typeof window !== 'undefined' && isFirebaseConfigValid()) {
@@ -53,6 +53,16 @@ if (typeof window !== 'undefined' && isFirebaseConfigValid()) {
     console.error('Firebase could not be initialized:', error);
   }
 }
+
+// Safe wrapper for onAuthStateChanged
+export const onAuthStateChanged = (callback: (user: User | null) => void) => {
+  if (!auth) {
+    console.warn('Firebase auth not initialized, skipping auth state listener');
+    callback(null);
+    return () => {}; // Return empty unsubscribe function
+  }
+  return _onAuthStateChanged(auth, callback);
+};
 
 // Function to sign in with Google
 export const signInWithGoogle = async () => {
@@ -149,4 +159,4 @@ export async function saveContactForm(data: ContactFormData): Promise<FeedbackRe
   }
 }
 
-export { app, db, analytics, auth, onAuthStateChanged }; 
+export { app, db, analytics, auth }; 
