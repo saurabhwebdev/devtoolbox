@@ -28,13 +28,14 @@ enum VerificationStatus {
 
 export default function JwtDecoderPage() {
   const [jwt, setJwt] = useState<string>("");
-  const [decodedJwt, setDecodedJwt] = useState<DecodedJwt | null>(null);
-  const [activeTab, setActiveTab] = useState<string>("decoder");
   const [secretKey, setSecretKey] = useState<string>("");
   const [isSecretBase64, setIsSecretBase64] = useState<boolean>(false);
+  const [decodedJwt, setDecodedJwt] = useState<DecodedJwt | null>(null);
   const [verificationStatus, setVerificationStatus] = useState<VerificationStatus>(VerificationStatus.UNKNOWN);
   const [verificationMessage, setVerificationMessage] = useState<string>("");
-  const [showFaq, setShowFaq] = useState(false);
+  const [showFaq, setShowFaq] = useState<boolean>(false);
+  /* activeTab is needed for tab component to work properly */
+  const [activeTab, setActiveTab] = useState<string>("decoder");
   
   // Load saved JWT and secret key from localStorage
   useEffect(() => {
@@ -68,40 +69,39 @@ export default function JwtDecoderPage() {
   
   // Decode JWT
   const decodeJwt = (token: string) => {
-    if (!token.trim()) {
-      setDecodedJwt(null);
-      setVerificationStatus(VerificationStatus.UNKNOWN);
-      setVerificationMessage("");
-      return;
-    }
-    
     try {
-      // Basic decoding without verification
-      const decoded = jwtDecode(token, { header: true }) as Record<string, any>;
-      const payload = jwtDecode(token) as Record<string, any>;
-      
-      // Extract signature
       const parts = token.split('.');
-      const signature = parts.length === 3 ? parts[2] : '';
-      
+      if (parts.length !== 3) {
+        throw new Error("Invalid JWT format");
+      }
+
+      const header = JSON.parse(atob(parts[0]));
+      const payload = JSON.parse(atob(parts[1]));
+      const signature = parts[2];
+
+      // Process payload dates for better display
+      if (payload.exp) {
+        payload.expFormatted = formatTimestamp(payload.exp);
+      }
+      if (payload.iat) {
+        payload.iatFormatted = formatTimestamp(payload.iat);
+      }
+      if (payload.nbf) {
+        payload.nbfFormatted = formatTimestamp(payload.nbf);
+      }
+
       setDecodedJwt({
-        header: decoded,
+        header,
         payload,
         signature
       });
-      
-      // Reset verification status
-      setVerificationStatus(VerificationStatus.UNKNOWN);
-      setVerificationMessage("");
-      
-      // Automatically attempt to verify if we have a secret key
-      if (secretKey) {
-        verifyJwt(token, secretKey, isSecretBase64);
-      }
-    } catch (error) {
-      console.error("JWT decoding error:", error);
-      toast.error("Invalid JWT format");
+
+      return { header, payload, signature };
+    } catch (err) {
+      // Log error but don't rethrow to prevent UI disruption
+      console.error("JWT decode error:", err);
       setDecodedJwt(null);
+      return null;
     }
   };
   
@@ -115,48 +115,39 @@ export default function JwtDecoderPage() {
   // Verify JWT signature
   const verifyJwt = async (token: string, secret: string, isBase64: boolean) => {
     if (!token || !secret) {
-      setVerificationStatus(VerificationStatus.UNKNOWN);
-      setVerificationMessage("Please provide both JWT and secret key");
+      setVerificationStatus(VerificationStatus.ERROR);
+      setVerificationMessage("JWT token and secret key are required");
       return;
     }
-    
+
     try {
-      const parts = token.split('.');
-      if (parts.length !== 3) {
-        setVerificationStatus(VerificationStatus.ERROR);
-        setVerificationMessage("Invalid JWT format");
-        return;
-      }
-      
-      // Get the algorithm from header
-      const headerPayload = parts[0] + '.' + parts[1];
-      const header = JSON.parse(atob(parts[0]));
-      const alg = header.alg;
-      
-      if (!alg) {
-        setVerificationStatus(VerificationStatus.ERROR);
-        setVerificationMessage("No algorithm specified in JWT header");
-        return;
-      }
-      
-      let secretBuffer: Uint8Array;
-      
-      // Convert secret to appropriate format
+      // Decode the JWT to get the algorithm
+      const decodedHeader = JSON.parse(atob(token.split('.')[0]));
+      const alg = decodedHeader.alg;
+
+      // Prepare the secret key
+      let secretBuffer;
       if (isBase64) {
+        // Convert base64 to binary
         try {
-          // Decode Base64
-          const binaryString = atob(secret);
-          secretBuffer = new Uint8Array(binaryString.length);
-          for (let i = 0; i < binaryString.length; i++) {
-            secretBuffer[i] = binaryString.charCodeAt(i);
+          const base64Regex = /^[A-Za-z0-9+/=]+$/;
+          if (!base64Regex.test(secret)) {
+            throw new Error("Invalid Base64 format");
+          }
+          
+          // Convert base64 to binary array
+          const binary = atob(secret);
+          secretBuffer = new Uint8Array(binary.length);
+          for (let i = 0; i < binary.length; i++) {
+            secretBuffer[i] = binary.charCodeAt(i);
           }
         } catch (error) {
           setVerificationStatus(VerificationStatus.ERROR);
-          setVerificationMessage("Invalid Base64 secret key");
+          setVerificationMessage("Invalid Base64 format");
           return;
         }
       } else {
-        // Use text as UTF-8
+        // Use text encoder for regular text secret
         secretBuffer = new TextEncoder().encode(secret);
       }
       
@@ -164,7 +155,7 @@ export default function JwtDecoderPage() {
       let key;
       try {
         if (alg.startsWith('HS')) {
-          // Use direct verification without importSecret
+          // Direct use of the buffer as the key
           key = secretBuffer;
         } else {
           // For RS, ES, PS algorithms, a public key would be needed
@@ -407,19 +398,19 @@ export default function JwtDecoderPage() {
                     {decodedJwt.payload.iat && (
                       <div className="flex justify-between">
                         <span>Issued At (iat):</span>
-                        <span>{formatTimestamp(decodedJwt.payload.iat)}</span>
+                        <span>{decodedJwt.payload.iatFormatted}</span>
                       </div>
                     )}
                     {decodedJwt.payload.exp && (
                       <div className="flex justify-between">
                         <span>Expires At (exp):</span>
-                        <span>{formatTimestamp(decodedJwt.payload.exp)}</span>
+                        <span>{decodedJwt.payload.expFormatted}</span>
                       </div>
                     )}
                     {decodedJwt.payload.nbf && (
                       <div className="flex justify-between">
                         <span>Not Before (nbf):</span>
-                        <span>{formatTimestamp(decodedJwt.payload.nbf)}</span>
+                        <span>{decodedJwt.payload.nbfFormatted}</span>
                       </div>
                     )}
                   </div>
