@@ -302,6 +302,13 @@ const tools = [
     href: "/tools/html-to-jsx"
   },
   {
+    id: "yaml-json-converter",
+    title: "YAML ↔ JSON Converter",
+    description: "Convert between YAML and JSON formats",
+    content: "Seamlessly transform data between YAML and JSON formats with validation, formatting options, and instant preview.",
+    href: "/tools/yaml-json-converter"
+  },
+  {
     id: "qr-code-generator",
     title: "QR Code Generator",
     description: "Create customizable QR codes",

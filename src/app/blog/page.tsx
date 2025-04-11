@@ -288,6 +288,13 @@ export default function BlogIndexPage() {
 
 const blogPosts = [
   {
+    title: "YAML ↔ JSON Converter: Understanding the Two Popular Data Formats",
+    slug: "yaml-json-converter",
+    date: "May 16, 2025",
+    readTime: 10,
+    excerpt: "Learn about YAML and JSON formats, their differences, use cases, and how to convert between them efficiently for configuration files and data interchange."
+  },
+  {
     title: "Color Palette Theory: Creating Harmonious Combinations for Web Design",
     slug: "color-palette-generator",
     date: "May 15, 2025",
