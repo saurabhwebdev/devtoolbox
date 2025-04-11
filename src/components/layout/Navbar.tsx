@@ -5,10 +5,12 @@ import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import { AuthButton } from "@/components/auth/AuthButton"
+import { Bookmark } from "lucide-react"
 
 const navigationItems = [
   { name: "Home", href: "/" },
   { name: "Tools", href: "/tools" },
+  { name: "Bookmarks", href: "/bookmarks", icon: Bookmark },
   { name: "Blog", href: "/blog" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
@@ -174,6 +176,7 @@ export function Navbar() {
                 href={item.href}
                 className="flex items-center text-sm font-medium text-muted-foreground hover:text-primary"
               >
+                {item.icon && <item.icon className="mr-1 h-4 w-4" />}
                 {item.name}
               </Link>
             ))}
@@ -203,9 +206,10 @@ export function Navbar() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-sm font-medium text-muted-foreground hover:text-primary"
+                className="flex items-center text-sm font-medium text-muted-foreground hover:text-primary"
                 onClick={() => setIsMenuOpen(false)}
               >
+                {item.icon && <item.icon className="mr-2 h-4 w-4" />}
                 {item.name}
               </Link>
             ))}
