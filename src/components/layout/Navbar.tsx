@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
+import { AuthButton } from "@/components/auth/AuthButton"
 
 const navigationItems = [
   { name: "Home", href: "/" },
@@ -179,6 +180,7 @@ export function Navbar() {
           </nav>
         </div>
         <div className="flex items-center gap-2">
+          <AuthButton />
           <Button variant="default" size="sm" className="hidden md:flex" asChild>
             <Link href="/tools">Start Using Tools</Link>
           </Button>
