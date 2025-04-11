@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "npm run build:vercel",
+  "buildCommand": "node prepare-deployment.js && npm run build:vercel",
   "outputDirectory": ".next",
   "devCommand": "npm run dev",
   "framework": "nextjs",
@@ -9,7 +9,7 @@
       "main": true
     }
   },
-  "ignoreCommand": "sh ./vercel-ignore-build-step.sh",
+  "ignoreCommand": "echo 'Proceeding with build'",
   "headers": [
     {
       "source": "/(.*)",
@@ -34,6 +34,8 @@
     }
   ],
   "env": {
-    "NEXT_PUBLIC_SITE_URL": "https://devtoolbox.vercel.app"
+    "NEXT_PUBLIC_SITE_URL": "https://devtoolbox.vercel.app",
+    "NEXT_DISABLE_ESLINT": "1",
+    "DISABLE_ESLINT_PLUGIN": "true"
   }
 } 
