@@ -9,7 +9,6 @@
       "main": true
     }
   },
-  "ignoreCommand": "echo 'Proceeding with build'",
   "headers": [
     {
       "source": "/(.*)",
