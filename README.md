@@ -10,6 +10,7 @@
   [![TypeScript](https://img.shields.io/badge/TypeScript-5.0.0-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
   [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0.0-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
   [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+  [![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=flat-square&logo=vercel)](https://vercel.com)
 </div>
 
 ## 📋 Overview
