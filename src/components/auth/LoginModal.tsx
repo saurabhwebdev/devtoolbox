@@ -11,20 +11,23 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { signInWithGoogle } from "@/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
 
 export function LoginModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { user } = useAuth();
+  const { user, signInWithGoogle, isFirebaseAvailable } = useAuth();
 
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
     setError(null);
     
     try {
+      if (!isFirebaseAvailable) {
+        throw new Error("Authentication services are currently unavailable");
+      }
+      
       const result = await signInWithGoogle();
       if (!result.success) {
         throw new Error("Failed to sign in with Google");
@@ -67,7 +70,7 @@ export function LoginModal() {
             variant="outline" 
             className="w-full max-w-xs gap-2"
             onClick={handleGoogleSignIn}
-            disabled={isLoading}
+            disabled={isLoading || !isFirebaseAvailable}
           >
             {isLoading ? (
               <>
@@ -102,6 +105,12 @@ export function LoginModal() {
               </>
             )}
           </Button>
+
+          {!isFirebaseAvailable && !error && (
+            <div className="bg-amber-50 text-amber-800 p-3 rounded-md text-sm">
+              Authentication services are currently unavailable. Some features may be limited.
+            </div>
+          )}
 
           {error && (
             <div className="bg-destructive/10 text-destructive p-3 rounded-md text-sm">

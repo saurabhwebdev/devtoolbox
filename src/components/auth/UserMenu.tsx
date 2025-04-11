@@ -12,19 +12,28 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/context/AuthContext";
-import { signOutUser } from "@/lib/firebase";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { toast } from "sonner";
 
 export function UserMenu() {
-  const { user } = useAuth();
+  const { user, signOut, isFirebaseAvailable } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSignOut = async () => {
     setIsLoading(true);
     try {
-      await signOutUser();
+      if (!isFirebaseAvailable) {
+        toast.error("Authentication services are currently unavailable");
+        return;
+      }
+      
+      const result = await signOut();
+      if (!result.success) {
+        toast.error("Failed to sign out");
+      }
     } catch (error) {
       console.error("Error signing out:", error);
+      toast.error("Failed to sign out");
     } finally {
       setIsLoading(false);
     }
@@ -65,7 +74,7 @@ export function UserMenu() {
         <DropdownMenuItem 
           className="text-destructive flex items-center gap-2 cursor-pointer"
           onClick={handleSignOut}
-          disabled={isLoading}
+          disabled={isLoading || !isFirebaseAvailable}
         >
           <LogOut className="h-4 w-4" />
           <span>{isLoading ? "Signing out..." : "Sign out"}</span>

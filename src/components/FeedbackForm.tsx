@@ -16,7 +16,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { saveFeedback, saveToolRequest, signInWithGoogle } from "@/lib/firebase";
+import { saveFeedback, saveToolRequest } from "@/lib/firebase";
 import { FeedbackData, ToolRequestData } from "@/types/firebase";
 import { useAuth } from "@/context/AuthContext";
 
@@ -31,7 +31,7 @@ export function FeedbackForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const { user, loading } = useAuth();
+  const { user, loading, signInWithGoogle, isFirebaseAvailable } = useAuth();
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,6 +90,10 @@ export function FeedbackForm() {
     setError(null);
     
     try {
+      if (!isFirebaseAvailable) {
+        throw new Error("Authentication services are currently unavailable");
+      }
+      
       const result = await signInWithGoogle();
       if (!result.success) {
         throw new Error("Failed to sign in with Google");
@@ -149,7 +153,7 @@ export function FeedbackForm() {
                 </p>
                 <Button 
                   onClick={handleSignIn}
-                  disabled={isLoading}
+                  disabled={isLoading || !isFirebaseAvailable}
                   className="gap-2"
                 >
                   {isLoading ? (
@@ -164,6 +168,12 @@ export function FeedbackForm() {
                     </>
                   )}
                 </Button>
+                
+                {!isFirebaseAvailable && !error && (
+                  <div className="bg-amber-50 text-amber-800 p-3 rounded-md text-sm">
+                    Authentication services are currently unavailable. Some features may be limited.
+                  </div>
+                )}
                 
                 {error && (
                   <div className="bg-destructive/10 text-destructive p-3 rounded-md text-sm">
