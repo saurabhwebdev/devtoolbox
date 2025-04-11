@@ -6,14 +6,27 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import React from "react";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredTools, setFilteredTools] = useState(popularTools);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     setIsLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
   }, []);
 
   useEffect(() => {
@@ -28,6 +41,39 @@ export default function Home() {
     );
     setFilteredTools(filtered);
   }, [searchTerm]);
+
+  const calculateEyePosition = (eyeRef: React.RefObject<HTMLElement>, eyeIndex: number) => {
+    if (!eyeRef.current) return { x: 0, y: 0 };
+    
+    const eye = eyeRef.current;
+    const eyeRect = eye.getBoundingClientRect();
+    
+    const eyeCenterX = eyeRect.left + eyeRect.width / 2;
+    const eyeCenterY = eyeRect.top + eyeRect.height / 2;
+    
+    // Calculate distance from eye center to mouse
+    const distX = mousePosition.x - eyeCenterX;
+    const distY = mousePosition.y - eyeCenterY;
+    
+    // Limit movement to 30% of eye size
+    const maxMove = eyeRect.width * 0.3;
+    const distance = Math.sqrt(distX * distX + distY * distY);
+    const angle = Math.atan2(distY, distX);
+    
+    const moveDistance = Math.min(distance, maxMove);
+    const moveX = (moveDistance * Math.cos(angle)) / maxMove;
+    const moveY = (moveDistance * Math.sin(angle)) / maxMove;
+    
+    return { x: moveX * 30, y: moveY * 30 };
+  };
+
+  // Refs for the eyes
+  const firstEyeRef = React.useRef<HTMLDivElement>(null);
+  const secondEyeRef = React.useRef<HTMLDivElement>(null);
+
+  // Calculate position for each eye
+  const firstEyePosition = calculateEyePosition(firstEyeRef as React.RefObject<HTMLElement>, 0);
+  const secondEyePosition = calculateEyePosition(secondEyeRef as React.RefObject<HTMLElement>, 1);
 
   return (
     <div className="container max-w-5xl py-12 space-y-8">
@@ -44,8 +90,104 @@ export default function Home() {
           animate={isLoaded ? { opacity: 1, scale: 1 } : {}}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-violet-500">
-            DevToolBox
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-black via-gray-700 to-black">
+            DevT
+            <span className="relative inline-flex items-center justify-center">
+              <motion.span
+                ref={firstEyeRef}
+                className="inline-block relative mx-[0.05em]"
+                style={{ width: '0.7em', height: '0.7em' }}
+              >
+                {/* Outer eye */}
+                <motion.span 
+                  className="absolute inset-0 rounded-full bg-black"
+                  animate={{ 
+                    scale: [1, 1.05, 1]
+                  }}
+                  transition={{ 
+                    repeat: Infinity, 
+                    duration: 3,
+                    ease: "easeInOut"
+                  }}
+                />
+                {/* Iris */}
+                <motion.span 
+                  className="absolute inset-[15%] rounded-full bg-gray-800"
+                />
+                {/* Pupil */}
+                <motion.span 
+                  className="absolute inset-[40%] rounded-full bg-black"
+                  style={{
+                    transform: `translate(${firstEyePosition.x}%, ${firstEyePosition.y}%)`
+                  }}
+                  animate={{
+                    scale: [1, 0.8, 1]
+                  }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 2,
+                    ease: "easeInOut"
+                  }}
+                />
+                {/* Highlight */}
+                <motion.span 
+                  className="absolute rounded-full bg-white h-[20%] w-[20%]"
+                  style={{ 
+                    top: `calc(25% + ${firstEyePosition.y * 0.5}%)`, 
+                    left: `calc(60% + ${firstEyePosition.x * 0.5}%)` 
+                  }}
+                />
+              </motion.span>
+              
+              <motion.span
+                ref={secondEyeRef}
+                className="inline-block relative mx-[0.05em]"
+                style={{ width: '0.7em', height: '0.7em' }}
+              >
+                {/* Outer eye */}
+                <motion.span 
+                  className="absolute inset-0 rounded-full bg-black"
+                  animate={{ 
+                    scale: [1, 1.05, 1]
+                  }}
+                  transition={{ 
+                    repeat: Infinity, 
+                    duration: 3,
+                    ease: "easeInOut",
+                    delay: 0.2
+                  }}
+                />
+                {/* Iris */}
+                <motion.span 
+                  className="absolute inset-[15%] rounded-full bg-gray-800"
+                />
+                {/* Pupil */}
+                <motion.span 
+                  className="absolute inset-[40%] rounded-full bg-black"
+                  style={{
+                    transform: `translate(${secondEyePosition.x}%, ${secondEyePosition.y}%)`
+                  }}
+                  animate={{
+                    scale: [1, 0.8, 1]
+                  }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 2,
+                    ease: "easeInOut",
+                    delay: 0.3
+                  }}
+                />
+                {/* Highlight */}
+                <motion.span 
+                  className="absolute rounded-full bg-white h-[20%] w-[20%]"
+                  style={{ 
+                    top: `calc(25% + ${secondEyePosition.y * 0.5}%)`, 
+                    left: `calc(60% + ${secondEyePosition.x * 0.5}%)` 
+                  }}
+                />
+              </motion.span>
+            </span>
+            lBox
           </span>
         </motion.h1>
         

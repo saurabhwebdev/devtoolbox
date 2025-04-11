@@ -1,27 +1,186 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { LayoutGrid, List } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function ToolsPage() {
   const [viewMode, setViewMode] = useState<"card" | "list">("card");
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  // Refs for the eyes
+  const firstEyeRef = useRef<HTMLDivElement>(null);
+  const secondEyeRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
+  const calculateEyePosition = (eyeRef: React.RefObject<HTMLElement>, eyeIndex: number) => {
+    if (!eyeRef.current) return { x: 0, y: 0 };
+    
+    const eye = eyeRef.current;
+    const eyeRect = eye.getBoundingClientRect();
+    
+    const eyeCenterX = eyeRect.left + eyeRect.width / 2;
+    const eyeCenterY = eyeRect.top + eyeRect.height / 2;
+    
+    // Calculate distance from eye center to mouse
+    const distX = mousePosition.x - eyeCenterX;
+    const distY = mousePosition.y - eyeCenterY;
+    
+    // Limit movement to 30% of eye size
+    const maxMove = eyeRect.width * 0.3;
+    const distance = Math.sqrt(distX * distX + distY * distY);
+    const angle = Math.atan2(distY, distX);
+    
+    const moveDistance = Math.min(distance, maxMove);
+    const moveX = (moveDistance * Math.cos(angle)) / maxMove;
+    const moveY = (moveDistance * Math.sin(angle)) / maxMove;
+    
+    return { x: moveX * 30, y: moveY * 30 };
+  };
+
+  // Calculate position for each eye
+  const firstEyePosition = calculateEyePosition(firstEyeRef as React.RefObject<HTMLElement>, 0);
+  const secondEyePosition = calculateEyePosition(secondEyeRef as React.RefObject<HTMLElement>, 1);
 
   return (
     <div className="container py-12 space-y-8">
       <div className="flex flex-col items-center text-center space-y-4">
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-          Developer Tools
-        </h1>
+        <motion.h1 
+          className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={isLoaded ? { opacity: 1, scale: 1 } : {}}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-black via-gray-700 to-black">
+            DevT
+            <span className="relative inline-flex items-center justify-center">
+              <motion.span
+                ref={firstEyeRef}
+                className="inline-block relative mx-[0.05em]"
+                style={{ width: '0.7em', height: '0.7em' }}
+              >
+                {/* Outer eye */}
+                <motion.span 
+                  className="absolute inset-0 rounded-full bg-black"
+                  animate={{ 
+                    scale: [1, 1.05, 1]
+                  }}
+                  transition={{ 
+                    repeat: Infinity, 
+                    duration: 3,
+                    ease: "easeInOut"
+                  }}
+                />
+                {/* Iris */}
+                <motion.span 
+                  className="absolute inset-[15%] rounded-full bg-gray-800"
+                />
+                {/* Pupil */}
+                <motion.span 
+                  className="absolute inset-[40%] rounded-full bg-black"
+                  style={{
+                    transform: `translate(${firstEyePosition.x}%, ${firstEyePosition.y}%)`
+                  }}
+                  animate={{
+                    scale: [1, 0.8, 1]
+                  }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 2,
+                    ease: "easeInOut"
+                  }}
+                />
+                {/* Highlight */}
+                <motion.span 
+                  className="absolute rounded-full bg-white h-[20%] w-[20%]"
+                  style={{ 
+                    top: `calc(25% + ${firstEyePosition.y * 0.5}%)`, 
+                    left: `calc(60% + ${firstEyePosition.x * 0.5}%)` 
+                  }}
+                />
+              </motion.span>
+              
+              <motion.span
+                ref={secondEyeRef}
+                className="inline-block relative mx-[0.05em]"
+                style={{ width: '0.7em', height: '0.7em' }}
+              >
+                {/* Outer eye */}
+                <motion.span 
+                  className="absolute inset-0 rounded-full bg-black"
+                  animate={{ 
+                    scale: [1, 1.05, 1]
+                  }}
+                  transition={{ 
+                    repeat: Infinity, 
+                    duration: 3,
+                    ease: "easeInOut",
+                    delay: 0.2
+                  }}
+                />
+                {/* Iris */}
+                <motion.span 
+                  className="absolute inset-[15%] rounded-full bg-gray-800"
+                />
+                {/* Pupil */}
+                <motion.span 
+                  className="absolute inset-[40%] rounded-full bg-black"
+                  style={{
+                    transform: `translate(${secondEyePosition.x}%, ${secondEyePosition.y}%)`
+                  }}
+                  animate={{
+                    scale: [1, 0.8, 1]
+                  }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 2,
+                    ease: "easeInOut",
+                    delay: 0.3
+                  }}
+                />
+                {/* Highlight */}
+                <motion.span 
+                  className="absolute rounded-full bg-white h-[20%] w-[20%]"
+                  style={{ 
+                    top: `calc(25% + ${secondEyePosition.y * 0.5}%)`, 
+                    left: `calc(60% + ${secondEyePosition.x * 0.5}%)` 
+                  }}
+                />
+              </motion.span>
+            </span>
+            lBox Tools
+          </span>
+        </motion.h1>
         <p className="max-w-[700px] text-lg text-muted-foreground">
           Browse our collection of simple yet powerful tools to streamline your workflow.
         </p>
       </div>
 
       <div className="flex justify-end">
-        <div className="inline-flex rounded-md border shadow-sm">
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={isLoaded ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.5, duration: 0.5 }}
+          className="inline-flex rounded-md border shadow-sm"
+        >
           <Button
             variant={viewMode === "card" ? "default" : "ghost"}
             size="sm"
@@ -40,30 +199,47 @@ export default function ToolsPage() {
             <List className="h-4 w-4 mr-2" />
             List
           </Button>
-        </div>
+        </motion.div>
       </div>
 
       {viewMode === "card" ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tools.map((tool) => (
-            <Card key={tool.title} className="h-full">
-              <CardHeader>
-                <CardTitle>{tool.title}</CardTitle>
-                <CardDescription>{tool.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm">{tool.content}</p>
-              </CardContent>
-              <CardFooter>
-                <Button variant="default" size="sm" className="w-full" asChild>
-                  <Link href={tool.href}>Use Tool</Link>
-                </Button>
-              </CardFooter>
-            </Card>
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={isLoaded ? { opacity: 1 } : {}}
+          transition={{ delay: 0.6, duration: 0.5 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          {tools.map((tool, index) => (
+            <motion.div
+              key={tool.title}
+              initial={{ opacity: 0, y: 20 }}
+              animate={isLoaded ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.7 + index * 0.05, duration: 0.5 }}
+            >
+              <Card className="h-full">
+                <CardHeader>
+                  <CardTitle>{tool.title}</CardTitle>
+                  <CardDescription>{tool.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm">{tool.content}</p>
+                </CardContent>
+                <CardFooter>
+                  <Button variant="default" size="sm" className="w-full" asChild>
+                    <Link href={tool.href}>Use Tool</Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       ) : (
-        <div className="border rounded-lg overflow-hidden">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={isLoaded ? { opacity: 1 } : {}}
+          transition={{ delay: 0.6, duration: 0.5 }}
+          className="border rounded-lg overflow-hidden"
+        >
           <table className="w-full">
             <thead>
               <tr className="bg-muted/50">
@@ -76,7 +252,13 @@ export default function ToolsPage() {
             </thead>
             <tbody>
               {tools.map((tool, index) => (
-                <tr key={tool.title} className={index !== tools.length - 1 ? "border-b" : ""}>
+                <motion.tr 
+                  key={tool.title}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={isLoaded ? { opacity: 1, x: 0 } : {}}
+                  transition={{ delay: 0.7 + index * 0.05, duration: 0.3 }}
+                  className={index !== tools.length - 1 ? "border-b" : ""}
+                >
                   <td className="py-3 px-4 text-muted-foreground text-center">{index + 1}</td>
                   <td className="py-3 px-4 font-medium">{tool.title}</td>
                   <td className="py-3 px-4 text-muted-foreground text-sm hidden md:table-cell">{tool.description}</td>
@@ -86,11 +268,11 @@ export default function ToolsPage() {
                       <Link href={tool.href}>Use</Link>
                     </Button>
                   </td>
-                </tr>
+                </motion.tr>
               ))}
             </tbody>
           </table>
-        </div>
+        </motion.div>
       )}
     </div>
   );
