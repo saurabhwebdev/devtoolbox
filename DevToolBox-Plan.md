@@ -23,6 +23,7 @@ This document tracks the development progress of all tools in the DevToolBox web
 | 14 | JWT Decoder | ✅ Completed | `/tools/jwt-decoder` | `/blog/jwt-decoder` | May 2025 |
 | 15 | Base64 Encoder/Decoder | ✅ Completed | `/tools/base64-tool` | `/blog/base64-tool` | May 2025 |
 | 16 | Markdown Previewer | ✅ Completed | `/tools/markdown-previewer` | `/blog/markdown-previewer` | May 2025 |
+| 17 | CSS Box Shadow Generator | ✅ Completed | `/tools/box-shadow-generator` | `/blog/box-shadow-generator` | May 2025 |
 
 ## Tool Details
 
@@ -168,39 +169,50 @@ This document tracks the development progress of all tools in the DevToolBox web
   - Local storage for saving drafts
 - **Blog Post**: "Mastering Markdown: A Comprehensive Guide for Developers"
 
+### 17. CSS Box Shadow Generator
+- **Description**: Visual tool for box shadows
+- **Features**: 
+  - Create and customize CSS box shadows with visual editor
+  - Add multiple shadows to a single element
+  - Support for inset shadows
+  - Customize shadow color, offset, blur, and spread
+  - Real-time preview of shadow effects
+  - Copy generated CSS code
+  - Save shadow configurations with localStorage
+- **Blog Post**: "The Power of CSS Box Shadows: Create Depth and Dimension in Web Design"
+
 ## Planned Tools
 
 | # | Tool Name | Slug | Description | Priority | Status |
 |---|-----------|------|-------------|----------|--------|
 | 1 | Cron Expression Helper | `cron-helper` | Build and explain cron strings | Medium | Pending |
-| 2 | CSS Box Shadow Generator | `box-shadow-generator` | Visual tool for box shadows | Medium | Pending |
-| 3 | Image to Base64 | `image-to-base64` | Encode image files to Base64 | Low | Pending |
-| 4 | JSON to CSV | `json-to-csv` | Convert JSON data to CSV format | Medium | Pending |
-| 5 | CSV to JSON | `csv-to-json` | Convert CSV to structured JSON | Medium | Pending |
-| 6 | Text Case Converter | `text-case-converter` | Switch between camelCase, snake_case, etc. | Medium | Pending |
-| 7 | URL Encoder / Decoder | `url-encoder-decoder` | Encode/decode URL strings | Medium | Pending |
-| 8 | HTML Minifier | `html-minifier` | Compress/minify HTML code | Low | Pending |
-| 9 | CSS Minifier | `css-minifier` | Minify CSS for performance | Low | Pending |
-| 10 | JS Minifier | `js-minifier` | Minify JavaScript code | Low | Pending |
-| 11 | HTML to Text Converter | `html-to-text` | Strip HTML tags from input | Low | Pending |
-| 12 | Color Contrast Checker | `color-contrast-checker` | Check WCAG contrast ratios | Medium | Pending |
-| 13 | Aspect Ratio Calculator | `aspect-ratio-calculator` | Maintain media ratios for design | Low | Pending |
-| 14 | WebP Converter | `webp-converter` | Convert images to WebP | Medium | Pending |
-| 15 | Folder Structure Generator | `folder-structure` | Visualize folder trees | Low | Pending |
-| 16 | .gitignore Generator | `gitignore-generator` | Build .gitignore files by tech stack | Medium | Pending |
-| 17 | JSON Schema Generator | `json-schema-generator` | Create schema from JSON object | Medium | Pending |
-| 18 | HTML Color Picker | `html-color-picker` | Interactive color picker (hex, rgb, hsl) | Medium | Pending |
-| 19 | Responsive Design Tester | `responsive-tester` | Preview URLs on multiple screen sizes | Low | Pending |
-| 20 | CSS Specificity Checker | `css-specificity-checker` | Calculate specificity of CSS selectors | Low | Pending |
-| 21 | Text Diff Checker | `text-diff-checker` | Compare and highlight differences | Medium | Pending |
-| 22 | GitHub README Builder | `readme-builder` | Drag-and-drop README creator | Low | Pending |
-| 23 | Email Template Builder | `email-template-builder` | Create clean HTML emails | Low | Pending |
-| 24 | Uptime Checker | `uptime-checker` | Monitor site/server status | Low | Pending |
-| 25 | Ping Tool (Client-side) | `ping-tool` | Lightweight browser-based ping tool | Low | Pending |
-| 26 | API Request Builder | `api-request-builder` | Form-based REST/GraphQL tester | Medium | Pending |
-| 27 | HTML Beautifier | `html-beautifier` | Pretty-print HTML | Low | Pending |
-| 28 | Code Snippet Beautifier | `code-beautifier` | Format multi-language code snippets | Medium | Pending |
-| 29 | CSS Animation Generator | `css-animation-generator` | Create and preview keyframe animations | Medium | Pending |
+| 2 | Image to Base64 | `image-to-base64` | Encode image files to Base64 | Low | Pending |
+| 3 | JSON to CSV | `json-to-csv` | Convert JSON data to CSV format | Medium | Pending |
+| 4 | CSV to JSON | `csv-to-json` | Convert CSV to structured JSON | Medium | Pending |
+| 5 | Text Case Converter | `text-case-converter` | Switch between camelCase, snake_case, etc. | Medium | Pending |
+| 6 | URL Encoder / Decoder | `url-encoder-decoder` | Encode/decode URL strings | Medium | Pending |
+| 7 | HTML Minifier | `html-minifier` | Compress/minify HTML code | Low | Pending |
+| 8 | CSS Minifier | `css-minifier` | Minify CSS for performance | Low | Pending |
+| 9 | JS Minifier | `js-minifier` | Minify JavaScript code | Low | Pending |
+| 10 | HTML to Text Converter | `html-to-text` | Strip HTML tags from input | Low | Pending |
+| 11 | Color Contrast Checker | `color-contrast-checker` | Check WCAG contrast ratios | Medium | Pending |
+| 12 | Aspect Ratio Calculator | `aspect-ratio-calculator` | Maintain media ratios for design | Low | Pending |
+| 13 | WebP Converter | `webp-converter` | Convert images to WebP | Medium | Pending |
+| 14 | Folder Structure Generator | `folder-structure` | Visualize folder trees | Low | Pending |
+| 15 | .gitignore Generator | `gitignore-generator` | Build .gitignore files by tech stack | Medium | Pending |
+| 16 | JSON Schema Generator | `json-schema-generator` | Create schema from JSON object | Medium | Pending |
+| 17 | HTML Color Picker | `html-color-picker` | Interactive color picker (hex, rgb, hsl) | Medium | Pending |
+| 18 | Responsive Design Tester | `responsive-tester` | Preview URLs on multiple screen sizes | Low | Pending |
+| 19 | CSS Specificity Checker | `css-specificity-checker` | Calculate specificity of CSS selectors | Low | Pending |
+| 20 | Text Diff Checker | `text-diff-checker` | Compare and highlight differences | Medium | Pending |
+| 21 | GitHub README Builder | `readme-builder` | Drag-and-drop README creator | Low | Pending |
+| 22 | Email Template Builder | `email-template-builder` | Create clean HTML emails | Low | Pending |
+| 23 | Uptime Checker | `uptime-checker` | Monitor site/server status | Low | Pending |
+| 24 | Ping Tool (Client-side) | `ping-tool` | Lightweight browser-based ping tool | Low | Pending |
+| 25 | API Request Builder | `api-request-builder` | Form-based REST/GraphQL tester | Medium | Pending |
+| 26 | HTML Beautifier | `html-beautifier` | Pretty-print HTML | Low | Pending |
+| 27 | Code Snippet Beautifier | `code-beautifier` | Format multi-language code snippets | Medium | Pending |
+| 28 | CSS Animation Generator | `css-animation-generator` | Create and preview keyframe animations | Medium | Pending |
 
 ## Development Roadmap
 
@@ -211,12 +223,13 @@ This document tracks the development progress of all tools in the DevToolBox web
 - ✅ JWT Decoder
 - ✅ Base64 Encoder/Decoder
 - ✅ Markdown Previewer
+- ✅ CSS Box Shadow Generator
 
 ### Medium Term (1-3 Months)
 - JSON to CSV/CSV to JSON Converters
 - Text Case Converter
-- CSS Box Shadow Generator
 - Cron Expression Helper
+- URL Encoder / Decoder
 
 ### Long Term (3+ Months)
 - API Request Builder
