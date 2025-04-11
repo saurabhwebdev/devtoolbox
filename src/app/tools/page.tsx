@@ -67,6 +67,7 @@ export default function ToolsPage() {
           <table className="w-full">
             <thead>
               <tr className="bg-muted/50">
+                <th className="text-left py-3 px-4 font-medium w-[50px]">#</th>
                 <th className="text-left py-3 px-4 font-medium">Tool</th>
                 <th className="text-left py-3 px-4 font-medium hidden md:table-cell">Description</th>
                 <th className="text-left py-3 px-4 font-medium hidden lg:table-cell">Details</th>
@@ -76,6 +77,7 @@ export default function ToolsPage() {
             <tbody>
               {tools.map((tool, index) => (
                 <tr key={tool.title} className={index !== tools.length - 1 ? "border-b" : ""}>
+                  <td className="py-3 px-4 text-muted-foreground text-center">{index + 1}</td>
                   <td className="py-3 px-4 font-medium">{tool.title}</td>
                   <td className="py-3 px-4 text-muted-foreground text-sm hidden md:table-cell">{tool.description}</td>
                   <td className="py-3 px-4 text-muted-foreground text-sm hidden lg:table-cell">{tool.content}</td>
