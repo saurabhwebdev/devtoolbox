@@ -164,7 +164,14 @@ export default function JwtDecoderPage() {
       let key;
       try {
         if (alg.startsWith('HS')) {
-          key = await jose.importSecret(secretBuffer);
+          // Fix for importSecret function
+          key = await crypto.subtle.importKey(
+            'raw',
+            secretBuffer,
+            { name: 'HMAC', hash: { name: `SHA-${alg.substring(2)}` } },
+            false,
+            ['sign', 'verify']
+          );
         } else {
           // For RS, ES, PS algorithms, a public key would be needed
           setVerificationStatus(VerificationStatus.ERROR);
@@ -179,21 +186,43 @@ export default function JwtDecoderPage() {
       
       // Verify the token
       try {
-        const result = await jose.jwtVerify(token, key);
-        setVerificationStatus(VerificationStatus.VERIFIED);
-        setVerificationMessage("Signature verified successfully");
+        // Use crypto.subtle to verify instead of jose.jwtVerify
+        const parts = token.split('.');
+        const signatureBase64 = parts[2].replace(/-/g, '+').replace(/_/g, '/');
+        const signaturePadding = '='.repeat((4 - signatureBase64.length % 4) % 4);
+        const signatureBase64Padded = signatureBase64 + signaturePadding;
         
-        // Check token expiration
-        const payload = result.payload;
-        const now = Math.floor(Date.now() / 1000);
+        const signature = new Uint8Array(
+          [...atob(signatureBase64Padded)].map(c => c.charCodeAt(0))
+        );
         
-        if (payload.exp && payload.exp < now) {
-          setVerificationMessage("Signature verified, but token has expired");
+        const data = new TextEncoder().encode(parts[0] + '.' + parts[1]);
+        const isValid = await crypto.subtle.verify(
+          { name: 'HMAC', hash: { name: `SHA-${alg.substring(2)}` } },
+          key,
+          signature,
+          data
+        );
+        
+        if (isValid) {
+          setVerificationStatus(VerificationStatus.VERIFIED);
+          setVerificationMessage("Signature verified successfully");
+          
+          // Check token expiration
+          const payload = decodedJwt?.payload;
+          const now = Math.floor(Date.now() / 1000);
+          
+          if (payload && payload.exp && payload.exp < now) {
+            setVerificationMessage("Signature verified, but token has expired");
+          }
+        } else {
+          setVerificationStatus(VerificationStatus.INVALID);
+          setVerificationMessage("Invalid signature");
         }
       } catch (error) {
         console.error("Verification error:", error);
-        setVerificationStatus(VerificationStatus.INVALID);
-        setVerificationMessage("Invalid signature");
+        setVerificationStatus(VerificationStatus.ERROR);
+        setVerificationMessage("Error verifying signature");
       }
     } catch (error) {
       console.error("Verification error:", error);

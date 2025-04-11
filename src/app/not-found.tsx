@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -9,14 +11,14 @@ export default function NotFound() {
           <h1 className="text-7xl font-bold text-primary">404</h1>
           <h2 className="text-3xl font-bold tracking-tight">Page not found</h2>
           <p className="text-xl text-muted-foreground">
-            Sorry, we couldn't find the page you're looking for.
+            Sorry, we could not find the page you are looking for.
           </p>
         </div>
         
         <div className="h-[1px] w-full bg-border my-8" />
         
         <p className="text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+          The page you are looking for does not exist or has been moved.
           <br />
           Here are some helpful links instead:
         </p>

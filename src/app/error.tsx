@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 export default function Error({
   error,
@@ -46,7 +47,7 @@ export default function Error({
             Try again
           </Button>
           <Button asChild variant="outline">
-            <a href="/">Go to homepage</a>
+            <Link href="/">Go to homepage</Link>
           </Button>
         </div>
       </div>
