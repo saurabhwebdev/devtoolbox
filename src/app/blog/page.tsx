@@ -217,25 +217,25 @@ export default function BlogIndexPage() {
               transition={{ delay: 0.7 + index * 0.05, duration: 0.5 }}
             >
               <Card className="flex flex-col h-full">
-                <CardHeader>
-                  <CardTitle className="text-xl">{post.title}</CardTitle>
-                  <CardDescription>
-                    <div className="flex items-center gap-2 text-sm">
-                      <span>{post.date}</span>
-                      <span>•</span>
-                      <span>{post.readTime} min read</span>
-                    </div>
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                  <p className="text-sm text-muted-foreground">{post.excerpt}</p>
-                </CardContent>
-                <CardFooter>
-                  <Button variant="outline" size="sm" className="w-full" asChild>
-                    <Link href={`/blog/${post.slug}`}>Read Article</Link>
-                  </Button>
-                </CardFooter>
-              </Card>
+              <CardHeader>
+                <CardTitle className="text-xl">{post.title}</CardTitle>
+                <CardDescription>
+                  <div className="flex items-center gap-2 text-sm">
+                    <span>{post.date}</span>
+                    <span>•</span>
+                    <span>{post.readTime} min read</span>
+                  </div>
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex-grow">
+                <p className="text-sm text-muted-foreground">{post.excerpt}</p>
+              </CardContent>
+              <CardFooter>
+                <Button variant="outline" size="sm" className="w-full" asChild>
+                  <Link href={`/blog/${post.slug}`}>Read Article</Link>
+                </Button>
+              </CardFooter>
+            </Card>
             </motion.div>
           ))}
         </motion.div>
